@@ -1,26 +1,31 @@
 <template>
-  <router-view/>
+  <router-view />
 </template>
 
 <style>
+html, body {
+  margin: 0;
+  height: 100%;
+  background-color: #050811;   /* dark background for whole page */
+}
+@import url('https://fonts.googleapis.com/css2?family=Comic+Relief&display=swap');
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  min-height: 100vh;
+  font-family: "Comic Relief", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: #fc9d0d;
 }
 
-nav {
-  padding: 30px;
-}
-
+/* Optional: update nav colors too */
 nav a {
   font-weight: bold;
-  color: #2c3e50;
+  color: #fc9d0d;
 }
 
 nav a.router-link-exact-active {
-  color: #42b983;
+  color: #869770;              /* or change this if you like */
 }
 </style>
