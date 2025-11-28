@@ -7,32 +7,38 @@
   <div class="container text-center">
     <div class="row">
       <div>
-      <nav class="auth-links">
-        <h3><router-link to="/login">Login</router-link>  </h3>
-        <h3><router-link to="/new-account"> Create account</router-link></h3>
-      </nav>
+        <nav class="home-links">
+          <h3>
+            <router-link to="/login">Login</router-link>
+          </h3>
+          <h3>
+            <router-link to="/new-account"> Create account</router-link>
+          </h3>
+        </nav>
         <img src="@/assets/background_picture.webp" alt="background" class="home-image">
 
       </div>
-  </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
 h1 {
   margin-top: 60px; /* to push the h1 lower */
-  margin-bottom: 40px;
+  margin-bottom: 40px; /*to push the next block lower*/
 }
-  .auth-links {
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-  }
+
+.home-links {
+  display: flex; /*Makes the children ("LogIn" & "Create account") sit next to each other horizontally by default.*/
+  justify-content: center;
+  gap: 40px; /*gap between links*/
+}
+
 .home-image {
   display: block;
   margin: 40px auto 0 auto; /* top margin + centered */
-  max-width: 400px;         /* prevents the picture from getting too big */
-  height: auto;             /* keeps proportions */
+  max-width: 400px; /* prevents the picture from getting too big */
+  height: auto; /* keeps proportions */
 }
 
 </style>
