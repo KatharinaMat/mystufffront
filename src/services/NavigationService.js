@@ -6,5 +6,8 @@ export default {
     },
     navigateToErrorView() {
         router.push({name: 'ErrorView'})
+    },
+    navigateToHomeView() {
+        router.push({name:'HomeView'})
     }
 }

@@ -1,27 +1,28 @@
-
-
-<script setup>
+<script>
 import HeaderComponent from "@/components/Header.vue";
+
+export default {
+  name: "ItemsView",
+  components: {
+    HeaderComponent,
+  },
+};
 </script>
 
 <template>
-  <HeaderComponent />
+  <div>
+    <HeaderComponent />
+
+    <table class="table table-hover">
+      <thead>
+      <tr>
+        <th scope="col">Item</th>
+        <th scope="col">Date</th>
+      </tr>
+      </thead>
+      <tbody>
+      <!-- table rows -->
+      </tbody>
+    </table>
+  </div>
 </template>
-
-<table class="table table-hover">
-<thead>
-<tr>
-  <th scope="col">Item</th>
-  <th scope="col">Date</th>
-</tr>
-</thead>
-<tbody>
-
-</tbody>
-</table>
-
-<script>
-export default {
-  name: 'ItemsView'
-}
-</script>

@@ -60,5 +60,9 @@ input.form-control {
     width: 150px;                     /* or any size you want */
     font-size: 1.6rem !important;      /*makes text bigger */
 }
+.modal-content {
+    background-color: #a2c4c9 !important;
+}
+
 
 
