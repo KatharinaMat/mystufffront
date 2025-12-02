@@ -4,7 +4,11 @@
       <h1>MyStuffLabelled</h1>
     </div>
 
-    <!--siia tuleks alert danger-->
+    <div class="row justify-content-center mb-3">
+      <div class="col col-6">
+        <AlertDanger :alert-message="alertMessage" @event-alert-box-closed="resetAlertMessage"/>
+      </div>
+    </div>
 
     <div class="container text-center">
       <div class="row">
@@ -58,14 +62,16 @@ h1 {
 
 <script>
 import LoginService from "@/services/LoginService";
+import AlertDanger from "@/modal/AlertDanger.vue";
 
 export default {
   name: 'LoginView',
+  components: {AlertDanger},
   data() {
     return {
       username: '',
       password: '',
-      //alertMessage: '',
+      alertMessage: '',
 
       loginResponse: {
         userId: 0,
@@ -86,6 +92,8 @@ export default {
         LoginService.sendGetLoginRequest(this.username, this.password)
             .then(response => this.handleLoginResponse(response))
             .catch()
+      } else {
+        this.displayIncorrectInputAlert();
       }
     },
 
@@ -94,6 +102,15 @@ export default {
       // todo anmden session storagesse
       // todo navigeeri X lehele (kasuta navigation serviceit)
 
+    },
+
+    displayIncorrectInputAlert() {
+      this.alertMessage = 'Please fill out all fields'
+      setTimeout(this.resetAlertMessage, 4000)
+    },
+
+    resetAlertMessage() {
+      this.alertMessage = ''
     },
 
 
