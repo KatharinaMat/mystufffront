@@ -32,7 +32,7 @@
             <label>Password</label>
           </div>
           <div class="form-floating">
-            <button type="button" class="btn btn-custom">Go!</button> <!--@click="processLogin()"-->
+            <button type="button" class="btn btn-custom btn-large">Go!</button> <!--@click="processLogin()"-->
           </div>
         </div>
       </div>

@@ -56,5 +56,9 @@ input.form-control {
     transform: scale(1.05) ;        /* pop effect */
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35) ;  /* stronger shade */
 }
+.btn-large {
+    width: 150px;                     /* or any size you want */
+    font-size: 1.6rem !important;      /*makes text bigger */
+}
 
 
