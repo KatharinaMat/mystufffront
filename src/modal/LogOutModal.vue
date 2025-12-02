@@ -8,8 +8,8 @@
 
 
     <template #buttons>
-      <button @click="$emit('event-close-modal')" type="submit" class="btn btn-outline-secondary me-3">Close</button>
-      <button @click="$emit('event-log-out-executed')" type="submit" class="btn btn-outline-success">Yes</button>
+      <button  @click="$emit('event-close-modal')" type="submit" class="btn btn-custom">Close</button>
+      <button @click="$emit('event-log-out-executed')" type="submit" class="btn btn-custom">Yes</button>
     </template>
 
   </Modal>

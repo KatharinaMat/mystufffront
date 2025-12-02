@@ -65,6 +65,29 @@ input.form-control {
     color: #050811 !important;
 
 }
+.header-bar {
+    height: 70px;          /* adjust */
+    display: flex;
+    align-items: center;   /* vertically center content */
+    justify-content: center;   /* center the welcome message */
+    font-size: 1.6rem !important;
+    position: relative;   /* ← THIS makes absolute children position correctly */
+}
+.welcome-text {
+    white-space: nowrap;       /* stays on one line */
+}
+
+.logout-icon {
+    position: absolute;
+    right: 100px; /*m bigger number pushes it to the left*/
+    font-size: 1.4rem;
+}
+.logout-icon:hover {
+    color: #869770;              /* match your button hover color */
+    transform: scale(1.15);      /* pop effect */
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);  /* subtle glow/shadow */
+}
+
 
 
 
