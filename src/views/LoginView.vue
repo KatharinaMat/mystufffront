@@ -32,7 +32,7 @@
             <label>Password</label>
           </div>
           <div class="form-floating">
-            <button type="button" class="btn btn-custom btn-large">Go!</button> <!--@click="processLogin()"-->
+            <button @click="processLogin" type="button" class="btn btn-custom btn-large">Go!</button>
           </div>
         </div>
       </div>
@@ -57,7 +57,49 @@ h1 {
 </style>
 
 <script>
+import LoginService from "@/services/LoginService";
+
 export default {
-  name: 'HomeView'
+  name: 'LoginView',
+  data() {
+    return {
+      username: '',
+      password: '',
+      //alertMessage: '',
+
+      loginResponse: {
+        userId: 0,
+        roleName: ''
+      },
+
+      //errorResponse: {
+       // message: '',
+       // errorCode: 0
+      }
+    },
+  methods: {
+
+
+
+    processLogin() {
+      if(this.username !=='' && this.password !=='') {
+        LoginService.sendGetLoginRequest(this.username, this.password)
+            .then(response => this.handleLoginResponse(response))
+            .catch()
+      }
+    },
+
+    handleLoginResponse(response) {
+      this.loginResponse = response.data
+      // todo anmden session storagesse
+      // todo navigeeri X lehele (kasuta navigation serviceit)
+
+    },
+
+
+
+
+  }
+
 }
 </script>
