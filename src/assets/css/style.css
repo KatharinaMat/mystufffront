@@ -21,4 +21,40 @@ h1 {
     text-align: center;
     color: #fc9d0d;
 }
+a {
+    display: inline-block;               /* allows scaling */
+    transition: transform 0.2s ease;     /* smooth animation */
+}
+
+a:hover {
+    transform: scale(1.1);               /* pop effect */
+    color: #869770;                      /* change color */
+}
+input.form-control {
+    background-color: #a2c4c9 !important;
+}
+/* Custom button style */
+.btn-custom {
+    background-color: #fc9d0d !important;     /* main fill */
+    border-color: #fc9d0d !important;
+    color: #050811 !important;                /* text color */
+
+
+    transition:
+            background-color 0.2s ease,
+            border-color 0.2s ease,
+            transform 0.15s ease,
+            box-shadow 0.15s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);   /* subtle shade */
+}
+
+/* Hover: color change + pop */
+.btn-custom:hover {
+    background-color: #869770 !important;
+    border-color: #869770 !important;
+    color: #050811 !important;
+    transform: scale(1.05) ;        /* pop effect */
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35) ;  /* stronger shade */
+}
+
 

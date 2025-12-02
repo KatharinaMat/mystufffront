@@ -3,20 +3,20 @@
     <div>
       <h1>MyStuffLabelled</h1>
     </div>
-  </div>
-  <div class="container text-center">
-    <div class="row">
-      <div>
-        <nav class="home-links">
-          <h3>
-            <router-link to="/login">Login</router-link>
-          </h3>
-          <h3>
-            <router-link to="/new-account"> Create account</router-link>
-          </h3>
-        </nav>
-        <img src="@/assets/background_picture.webp" alt="background" class="home-image">
+    <div class="container text-center">
+      <div class="row">
+        <div>
+          <nav class="home-links">
+            <h3>
+              <router-link to="/login">Login</router-link>
+            </h3>
+            <h3>
+              <router-link to="/new-account">Create account</router-link>
+            </h3>
+          </nav>
+          <img src="@/assets/background_picture.webp" alt="background" class="home-image">
 
+        </div>
       </div>
     </div>
   </div>
