@@ -1,6 +1,8 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import LoginView from "@/views/LoginView.vue";
+import NewAccountView from "@/views/NewAccountView.vue";
+
 
 const routes = [
     {
@@ -16,7 +18,7 @@ const routes = [
     {
         path: '/new-account',
         name: 'newAccount',
-        component: 'NewAccountView'
+        component: NewAccountView
     }
 
 ]
