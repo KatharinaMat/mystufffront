@@ -22,7 +22,7 @@
     </div>
     <div class="container text-center">
       <div class="row justify-content-center">
-        <div class="col-10 col-md-6">
+        <div class="col-10 col-md-6 col-lg-4">
           <div class="form-floating mb-3">
             <input v-model="username" type="text" class="form-control" placeholder=" Enter Username">
             <label>Username</label>
