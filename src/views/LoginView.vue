@@ -86,15 +86,17 @@ export default {
   methods: {
 
 
-
-    processLogin() {
-      if(this.username !=='' && this.password !=='') {
+processLogin() {
+      if(this.allFieldsHaveCorrectInput()) {
         LoginService.sendGetLoginRequest(this.username, this.password)
             .then(response => this.handleLoginResponse(response))
             .catch()
       } else {
         this.displayIncorrectInputAlert();
       }
+    },
+    allFieldsHaveCorrectInput() {
+      return this.username !== '' && this.password !== '';
     },
 
     handleLoginResponse(response) {
