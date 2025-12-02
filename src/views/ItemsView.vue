@@ -19,3 +19,9 @@ import HeaderComponent from "@/components/Header.vue";
 
 </tbody>
 </table>
+
+<script>
+export default {
+  name: 'ItemsView'
+}
+</script>
