@@ -80,7 +80,7 @@ input.form-control {
 .logout-icon {
     position: absolute;
     right: 100px; /*m bigger number pushes it to the left*/
-    font-size: 1.4rem;
+    font-size: 1.6rem;
 }
 .logout-icon:hover {
     color: #869770;              /* match your button hover color */
