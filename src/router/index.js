@@ -29,8 +29,8 @@ const routes = [
         component: ItemsView
     },
     {
-        path:'/item',
-        name:'SelectedItemView',
+        path: '/item',
+        name: 'SelectedItemView',
         component: SelectedItemView
     },
 

@@ -12,9 +12,10 @@
       </thead>
       <tbody>
       <!-- table rows -->
-      <tr v-for="item in items" :key="item.id">
+      <tr v-for="item in items" :key="item.itemId">
         <td>
-          <router-link :to="{ name: 'SelectedItemView', params: { itemId: item.id } }" class="item-link">
+          <router-link   :to="{ name: 'SelectedItemView', query: { itemId: item.itemId } }"
+                         class="item-link">
             {{ item.itemName }}
           </router-link>
         </td>
