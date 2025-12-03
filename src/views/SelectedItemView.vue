@@ -3,14 +3,15 @@
     <HeaderComponent />
 
     <!-- Simple loading + error handling -->
-    <div class="container mt-4">
-      <div v-if="loading" class="text-center">
-        Loading item...
+    <div v-if="loading" class="text-center mt-5">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
       </div>
+    </div>
 
-      <div v-else-if="error" class="alert alert-danger">
-        {{ error }}
-      </div>
+    <div v-else-if="errorResponse" class="alert alert-danger m-3">
+      {{ errorResponse.message || 'An unknown error occurred.' }}
+    </div>
 
       <div v-else>
         <div class="row mb-4">
@@ -60,7 +61,7 @@
         </div>
       </div>
     </div>
-  </div>
+
 </template>
 
 <script>
@@ -75,7 +76,7 @@ export default {
     return {
       item: null,
       loading: true,
-      error: ""
+      errorResponse: null
     };
   },
 
@@ -92,13 +93,14 @@ export default {
 
       SelectedItemService.sendGetItemRequest(itemId)
           .then(response => {
-            console.log("item from backend:", response.data);
             this.item = response.data;
             this.loading = false;
           })
-          .catch(err => {
-            console.error("Error loading item:", err);
-            this.error = "Unable to load item details.";
+          .catch(error => {
+            this.errorResponse = error.response?.data || { message: 'Failed to load item data.'};
+            console.error("Error loading item:", error);
+          })
+          .finally(() => {
             this.loading = false;
           });
     },
