@@ -2,9 +2,10 @@
   <Modal :modal-is-open="logOutModalIsOpen"
          @event-close-modal="$emit('event-close-modal')"
   >
-    <template #title>
-      Log Out?
+    <template #body>
+      Are you sure you want to log out?
     </template>
+
 
 
     <template #buttons>

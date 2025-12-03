@@ -9,7 +9,7 @@ import ErrorView from "@/views/ErrorView.vue";
 const routes = [
     {
         path: '/',
-        name: 'home',
+        name: 'HomeView',
         component: HomeView
     },
     {
