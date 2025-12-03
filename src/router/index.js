@@ -4,6 +4,7 @@ import LoginView from "@/views/LoginView.vue";
 import NewAccountView from "@/views/NewAccountView.vue";
 import ItemsView from "@/views/ItemsView.vue";
 import ErrorView from "@/views/ErrorView.vue";
+import SelectedItemView from "@/views/SelectedItemView.vue";
 
 
 const routes = [
@@ -27,6 +28,13 @@ const routes = [
         name:'ItemsView',
         component: ItemsView
     },
+    {
+        path:'/item',
+        name:'SelectedItemView',
+        component: SelectedItemView
+    },
+
+
     {
         path: '/error',
         name: 'errorRoute',

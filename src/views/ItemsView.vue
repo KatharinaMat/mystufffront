@@ -2,8 +2,8 @@
 <template>
   <div>
     <HeaderComponent />
-
-    <table class="table table-hover" v-if="items.length >0">
+    <div class="items-table-wrapper">
+    <table class="items-table" v-if="items.length >0">
       <thead>
       <tr>
         <th scope="col">Item</th>
@@ -13,7 +13,11 @@
       <tbody>
       <!-- table rows -->
       <tr v-for="item in items" :key="item.id">
-        <td>{{ item.itemName }}</td>
+        <td>
+          <router-link :to="{ name: 'SelectedItemView', params: { itemId: item.id } }" class="item-link">
+            {{ item.itemName }}
+          </router-link>
+        </td>
         <td>{{ formatDate(item.itemDate) }}</td>
 
         <td v-if="isLoggedIn">
@@ -23,8 +27,10 @@
       </tr>
       </tbody>
     </table>
+
     <div v-else class="text-muted">
       You have no items yet :)
+    </div>
     </div>
   </div>
 </template>
@@ -58,9 +64,9 @@ export default {
       return new Date(dateString).toLocaleDateString('et-EE');
     }
   },
-  /*beforeMount() {
-    this.isAdmin = SessionStorageService.isAdmin()
-  }*/
+  beforeMount() {
+    this.isLoggedIn = SessionStorageService.isLoggedIn()
+  },
   mounted() {
     this.loadItems();
   }

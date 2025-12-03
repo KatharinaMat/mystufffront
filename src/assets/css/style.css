@@ -105,7 +105,6 @@ input.form-control {
 }
 
 .modal-content {
-    background: #fff;
     border-radius: 8px;
     padding: 20px 24px;
     max-width: 400px;
@@ -130,6 +129,54 @@ input.form-control {
 .password-toggle-icon:hover {
     color: #000;
 }
+
+.items-table-wrapper {
+    display: flex;
+    justify-content: center;     /* center horizontally */
+    margin-top: 20px;
+}
+
+.items-table {
+    width: 40%;              /* take only 60% of screen */
+    background-color: #a2c4c9;     /* your background color */
+    color: #050811;              /* your text color */
+    border-radius: 12px;
+    overflow: hidden;            /* keeps rounded corners clean */
+    border-collapse: collapse;  /* cleaner edges */
+    table-layout: fixed;     /* FIXES uneven header space */
+    font-size: 1.1rem;
+    display: table;          /* ensures proper layout */
+}
+
+/* Table header styling */
+.items-table thead th {
+    background-color: #7fa3a8;   /* slightly darker header */
+    color: #050811;
+    font-weight: bold;
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+/* Table body text */
+.items-table tbody td {
+    vertical-align: middle;
+    text-align: center;
+}
+
+/* Hover effect */
+.items-table tbody tr:hover {
+    background-color: #91b5ba;   /* subtle darker hover */
+    color: #050811;
+    cursor: pointer;
+}
+.items-table th,
+.items-table td {
+    padding: 14px 20px;          /* more space */
+    text-align: center;
+    width: 50%;                  /* ⬅ both columns take equal width */
+}
+
+
 
 
 
