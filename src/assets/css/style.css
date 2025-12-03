@@ -175,6 +175,52 @@ input.form-control {
     text-align: center;
     width: 50%;                  /* ⬅ both columns take equal width */
 }
+/* Wrapper to center everything */
+.item-table-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+/* Main table styling */
+.item-table {
+    width: 70%;
+    max-width: 700px;
+    background-color: #a2c4c9;
+    color: #050811;
+    border-radius: 12px;
+    overflow: hidden;
+    border-collapse: collapse;
+    font-size: 1.1rem;
+    margin-top: 10px;
+}
+
+/* Header cells */
+.item-table th {
+    background-color: #7fa3a8;
+    font-weight: bold;
+    width: 35%;
+    padding: 14px 20px;
+    text-align: left;
+}
+
+/* Data cells */
+.item-table td {
+    padding: 14px 20px;
+    text-align: left;
+}
+
+/* Row hover effect */
+.item-table tr:hover {
+    background-color: #8fb0b5;
+    cursor: default;
+}
+
+/* Image styling (optional) */
+.img-fluid {
+    max-height: 300px;
+    border-radius: 10px;
+    object-fit: cover;
+}
 
 
 

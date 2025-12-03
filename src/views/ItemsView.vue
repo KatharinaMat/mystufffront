@@ -67,6 +67,7 @@ export default {
   },
   beforeMount() {
     this.isLoggedIn = SessionStorageService.isLoggedIn()
+    this.isLoggedIn = SessionStorageService.isLoggedIn()
   },
   mounted() {
     this.loadItems();

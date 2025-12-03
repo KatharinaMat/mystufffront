@@ -13,25 +13,25 @@
       {{ errorResponse.message || 'An unknown error occurred.' }}
     </div>
 
-      <div v-else>
-        <div class="row mb-4">
-          <div class="col">
-            <h2>Item #{{ item.itemId }}</h2>
-          </div>
+    <div v-else>
+      <div class="row mb-4">
+        <div class="col">
+          <h2>Item #{{ item.itemId }}</h2>
+        </div>
+      </div>
+      <div class="row mb-3">
+
+        <div v-if="item.imageData" class="col-md-6">
+          <img
+              :src="`data:image/jpeg;base64,${item.imageData}`"
+              alt="Item image"
+              class="img-fluid rounded"
+          />
         </div>
 
-        <div class="row mb-3">
-          <div class="col-md-6">
-            <img
-                v-if="item.imageData"
-                :src="`data:image/jpeg;base64,${item.imageData}`"
-                alt="Item image"
-                class="img-fluid rounded"
-            />
-          </div>
-
-          <div class="col-md-6">
-            <table class="table">
+        <div :class="item.imageData ? 'col-md-6' : 'col-md-12'">
+          <div class="item-table-wrapper">
+            <table class="item-table">
               <tbody>
               <tr>
                 <th>Item:</th>
@@ -51,16 +51,20 @@
               </tr>
               </tbody>
             </table>
+          </div>
 
-            <div class="mt-3">
-              <button @click="goBack" class="btn btn-secondary me-2">Back</button>
-              <button @click="downloadQR" class="btn btn-primary me-2">Download QR</button>
-              <button @click="printItem" class="btn btn-info">Print</button>
-            </div>
+          <div class="mt-3">
+            <button @click="goBack" class="btn btn-custom me-3">Back</button>
+            <button @click="printItem" class="btn btn-custom me-3">Edit</button> <!--PARANDA peab tegema meetodit mis viib EditView'le*/-->
+            <button @click="downloadQR" class="btn btn-custom me-3">Download QR</button>
+            <button @click="printItem" class="btn btn-custom">Print</button>
           </div>
         </div>
+
       </div>
+
     </div>
+  </div>
 
 </template>
 
