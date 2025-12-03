@@ -32,8 +32,13 @@
             <label>Username</label>
           </div>
           <div class="form-floating mb-3">
-            <input v-model="password" type="password" class="form-control" placeholder="Password">
+            <input v-model="password" :type="showPassword ? 'text' : 'password'" class="form-control" placeholder="Password">
             <label>Password</label>
+            <font-awesome-icon
+                :icon="showPassword ? 'fa-regular fa-eye-slash' : 'fa-regular fa-eye'"
+                class="password-toggle-icon"
+                @click="togglePassword"
+            />
           </div>
           <div class="form-floating">
             <button @click="processLogin" type="button" class="btn btn-custom btn-large">Go!</button>
@@ -64,6 +69,7 @@ h1 {
 import LoginService from "@/services/LoginService";
 import AlertDanger from "@/modal/AlertDanger.vue";
 import NavigationService from "@/services/NavigationService";
+import SessionStorageService from "@/services/SessionStorageService";
 
 export default {
   name: 'LoginView',
@@ -72,6 +78,7 @@ export default {
     return {
       username: '',
       password: '',
+      showPassword: false,
       alertMessage: '',
 
       loginResponse: {
@@ -80,12 +87,15 @@ export default {
       },
 
       errorResponse: {
-      message: '',
-      errorCode: 0
-    }
+        message: '',
+        errorCode: 0
       }
-    },
+    }
+  },
   methods: {
+    togglePassword() {
+      this.showPassword = !this.showPassword
+    },
 
     processLogin() {
       if (this.allFieldsHaveCorrectInput()) {
@@ -115,6 +125,7 @@ export default {
     setSessionStorageItems() {
       sessionStorage.setItem('userId', this.loginResponse.userId)
       sessionStorage.setItem('roleName', this.loginResponse.roleName)
+      SessionStorageService.setUsername(this.username)
     },
 
     updateNavMenuUserIsLoggedIn() {

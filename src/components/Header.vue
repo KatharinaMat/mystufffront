@@ -1,7 +1,7 @@
 <template>
   <div class="header-bar">
     <div class="welcome-text">
-      Welcome, username!
+      Welcome, {{ username || 'admin' }}!
     </div>
 
     <font-awesome-icon
@@ -32,6 +32,7 @@ export default {
     return {
       isLoggedIn: false,
       isAdmin: false,
+      username:'',
       logOutModalIsOpen: false
     }
   },
@@ -60,6 +61,7 @@ export default {
     updateNavMenu() {
       this.isLoggedIn = SessionStorageService.isLoggedIn()
       this.isAdmin = SessionStorageService.isAdmin()
+      this.username = SessionStorageService.getUsername()
     },
 
   },

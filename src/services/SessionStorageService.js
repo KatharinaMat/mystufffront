@@ -7,4 +7,11 @@ export default {
     isLoggedIn() {
         return sessionStorage.getItem('roleName') !== null
     },
+    setUsername(username) {
+        sessionStorage.setItem('username', username)
+    },
+
+    getUsername() {
+        return sessionStorage.getItem('username')
+    }
 }
