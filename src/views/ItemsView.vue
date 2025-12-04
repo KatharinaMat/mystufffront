@@ -18,8 +18,8 @@
 
           <td v-if="isLoggedIn">
             <font-awesome-icon @click="navigateToEditItem(item.itemId)" class="cursor-pointer me-3" icon="fa-solid fa-pen-to-square"/>
-            <font-awesome-icon @click="displayDeleteItemModal(item.itemId)" class="cursor-pointer" icon="fa-solid fa-trash"/>
-            <font-awesome-icon @click="displayQrModal(item.itemId)" class="cursor-pointer" icon="fa-solid fa-qrcode"/>
+            <font-awesome-icon @click="navigateToDeleteItemModal(item.itemId)" class="cursor-pointer" icon="fa-solid fa-trash"/>
+            <font-awesome-icon @click="navigateToQrModal(item.itemId)" class="cursor-pointer" icon="fa-solid fa-qrcode"/>
           </td>
         </tr>
         </tbody>
@@ -57,10 +57,15 @@ export default {
     navigateToItemView(itemId) {
       NavigationService.navigateToItemView(itemId)
     },
-    /*navigateToEditItem(itemId) {
+    navigateToEditItem(itemId) {
       NavigationService.navigateToEditItem(itemId)
-    },*/
-
+    },
+    navigateToDeleteItemModal(itemId) {
+      NavigationService.navigateToDeleteItemModal(itemId)
+    },
+    navigateToQrModal(itemId) {
+      NavigationService.navigateToQrModal(itemId)
+    },
     loadItems() {
       const userId = sessionStorage.getItem('userId');
       ItemsService.sendGetItemsRequest(userId)

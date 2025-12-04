@@ -10,7 +10,15 @@ export default {
     navigateToHomeView() {
         router.push({name: 'homeRoute'})
     },
+    navigateToEditItem() {
 
+    },
+    navigateToDeleteItemModal() {
+
+    },
+    navigateToQrModal() {
+
+    },
     navigateToItemView(itemId) {
         router.push({
             name: 'itemRoute',
