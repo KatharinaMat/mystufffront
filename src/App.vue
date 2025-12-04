@@ -48,13 +48,14 @@ nav a.router-link-exact-active {
   color: #869770;              /* or change this if you like */
 }
 </style>
-<script >
+<script>
 import {defineComponent} from "vue";
 import LogOutModal from "@/modal/LogOutModal.vue";
 import NavigationService from "@/services/NavigationService";
 import SessionStorageService from "@/services/SessionStorageService";
 
 export default defineComponent({
+  name: 'App',
   components: {LogOutModal},
   data() {
     return {
