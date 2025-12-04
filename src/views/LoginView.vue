@@ -34,26 +34,11 @@
           <div class="form-floating mb-3">
             <input v-model="password" :type="showPassword ? 'text' : 'password'" class="form-control" placeholder="Password">
             <label>Password</label>
-
-
-
-<!--            <font-awesome-icon-->
-<!--                :icon="showPassword ? 'fa-regular fa-eye-slash' : 'fa-regular fa-eye'"-->
-<!--                class="password-toggle-icon"-->
-<!--                @click="togglePassword"-->
-<!--            />-->
-
-
-
             <font-awesome-icon
                 :icon="showPassword ? 'fa-regular fa-eye-slash' : 'fa-regular fa-eye'"
                 class="password-toggle-icon"
                 @click="togglePassword"
             />
-
-
-
-
           </div>
           <div class="form-floating">
             <button @click="processLogin" type="button" class="btn btn-custom btn-large">Go!</button>

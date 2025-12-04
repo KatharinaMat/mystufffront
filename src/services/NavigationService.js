@@ -13,9 +13,7 @@ export default {
     navigateToEditItem() {
 
     },
-    navigateToDeleteItemModal() {
 
-    },
     navigateToQrModal() {
 
     },

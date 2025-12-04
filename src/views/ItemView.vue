@@ -16,20 +16,11 @@
     </div>
 
     <div v-else>
-      <div class="row mb-4">
-        <div class="col">
-          <h2>Item #{{ item.itemId }}</h2>
-        </div>
-      </div>
-      <div class="row mb-3">
+      <Details
+          :item="item"
+          :mode="isAdd ? 'add' : 'view'"
+      />
 
-        <div v-if="item.imageData" class="col-md-6">
-          <img
-              :src="item.imageData"
-              alt="Item image"
-              class="img-fluid rounded"
-          />
-        </div>
 
         <div :class="item.imageData ? 'col-md-6' : 'col-md-12'">
           <div class="item-table-wrapper">
@@ -39,8 +30,9 @@
 
           <div class="mt-3">
             <button @click="goBack" class="btn btn-custom me-3">Back</button>
-            <button @click="printItem" class="btn btn-custom me-3">Edit</button>
-            <!--PARANDA peab tegema meetodit mis viib EditView'le*/-->
+            <button @click="printItem" class="btn btn-custom me-3">Edit</button><!--todo peab tegema meetodit mis viib EditView'le*/-->
+            <button @click="goBack" class="btn btn-custom me-3">Delete</button><!--todo peab tegema meetodit mis avab delete modali*/-->
+
             <button @click="downloadQR" class="btn btn-custom me-3">Download QR</button>
             <button @click="printItem" class="btn btn-custom">Print</button>
           </div>
@@ -49,7 +41,6 @@
       </div>
 
     </div>
-  </div>
 
 </template>
 
@@ -57,10 +48,12 @@
 import ItemService from "@/services/ItemService";
 import {QrcodeCanvas, QrcodeSvg} from "qrcode.vue";
 import {useRoute} from "vue-router";
+import Details from "@/components/Details.vue";
+
 
 export default {
   name: "ItemView",
-  components: {QrcodeCanvas, QrcodeSvg,},
+  components: {Details, QrcodeCanvas, QrcodeSvg,},
 
   data() {
     return {
@@ -87,8 +80,7 @@ export default {
 
   methods: {
     loadItem() {
-      const itemId = this.$route.query.itemId;   // /item?itemId=2
-      console.log("itemId from route:", itemId);
+      const itemId = this.$route.query.itemId;
 
       if (!itemId) {
         this.error = "No itemId provided in URL.";
@@ -108,11 +100,6 @@ export default {
           .finally(() => {
             this.loading = false;
           });
-    },
-
-    formatDate(dateString) {
-      if (!dateString) return "";
-      return new Date(dateString).toLocaleDateString("et-EE");
     },
 
     goBack() {
