@@ -7,12 +7,15 @@ html, body {
     min-height: 100vh;
     background-color: #050811;
 }
+
 body {
     color: #fc9d0d;
 }
+
 h1 {
     color: #fc9d0d;
 }
+
 #app {
     min-height: 100vh;
     font-family: "Comic Relief", sans-serif;
@@ -21,31 +24,33 @@ h1 {
     text-align: center;
     color: #fc9d0d;
 }
+
 a {
-    display: inline-block;               /* allows scaling */
-    transition: transform 0.2s ease;     /* smooth animation */
+    display: inline-block; /* allows scaling */
+    transition: transform 0.2s ease; /* smooth animation */
 }
 
 a:hover {
-    transform: scale(1.1);               /* pop effect */
-    color: #869770;                      /* change color */
+    transform: scale(1.1); /* pop effect */
+    color: #869770; /* change color */
 }
+
 input.form-control {
     background-color: #a2c4c9 !important;
 }
+
 /* Custom button style */
 .btn-custom {
-    background-color: #fc9d0d !important;     /* main fill */
+    background-color: #fc9d0d !important; /* main fill */
     border-color: #fc9d0d !important;
-    color: #050811 !important;                /* text color */
+    color: #050811 !important; /* text color */
 
 
-    transition:
-            background-color 0.2s ease,
-            border-color 0.2s ease,
-            transform 0.15s ease,
-            box-shadow 0.15s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);   /* subtle shade */
+    transition: background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25); /* subtle shade */
 }
 
 /* Hover: color change + pop */
@@ -53,28 +58,32 @@ input.form-control {
     background-color: #869770 !important;
     border-color: #869770 !important;
     color: #050811 !important;
-    transform: scale(1.05) ;        /* pop effect */
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35) ;  /* stronger shade */
+    transform: scale(1.05); /* pop effect */
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35); /* stronger shade */
 }
+
 .btn-large {
-    width: 150px;                     /* or any size you want */
-    font-size: 1.6rem !important;      /*makes text bigger */
+    width: 150px; /* or any size you want */
+    font-size: 1.6rem !important; /*makes text bigger */
 }
+
 .modal-content {
     background-color: #a2c4c9 !important;
     color: #050811 !important;
 
 }
+
 .header-bar {
-    height: 70px;          /* header size */
+    height: 70px; /* header size */
     display: flex;
-    align-items: center;   /* vertically center content */
-    justify-content: center;   /* center the welcome message */
+    align-items: center; /* vertically center content */
+    justify-content: center; /* center the welcome message */
     font-size: 1.6rem !important;
-    position: relative;   /* ← THIS makes absolute children position correctly */
+    position: relative; /* ← THIS makes absolute children position correctly */
 }
+
 .welcome-text {
-    white-space: nowrap;       /* stays on one line */
+    white-space: nowrap; /* stays on one line */
 }
 
 .logout-icon {
@@ -82,21 +91,22 @@ input.form-control {
     right: 100px; /*m bigger number pushes it to the left*/
     font-size: 1.6rem;
 }
+
 .logout-icon:hover {
-    color: #869770;              /* match your button hover color */
-    transform: scale(1.15);      /* pop effect */
-    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);  /* subtle glow/shadow */
+    color: #869770; /* match your button hover color */
+    transform: scale(1.15); /* pop effect */
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.35); /* subtle glow/shadow */
 }
 
- .modal-overlay {
-     position: fixed;        /* attach to viewport, not header */
-     inset: 0;               /* top:0; right:0; bottom:0; left:0 */
-     display: flex;
-     justify-content: center;
-     align-items: center;
-     background: rgba(0, 0, 0, 0.5);
-     z-index: 1050;          /* above header/nav/etc */
- }
+.modal-overlay {
+    position: fixed; /* attach to viewport, not header */
+    inset: 0; /* top:0; right:0; bottom:0; left:0 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1050; /* above header/nav/etc */
+}
 
 .modal-container {
     /* you can keep this minimal now, overlay does the centering */
@@ -111,11 +121,13 @@ input.form-control {
     width: 90%;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
 }
+
 .modal-footer {
     display: flex;
     justify-content: center;
     gap: 20px; /* <-- space between buttons */
 }
+
 .password-toggle-icon {
     position: absolute;
     right: 12px;
@@ -132,25 +144,25 @@ input.form-control {
 
 .items-table-wrapper {
     display: flex;
-    justify-content: center;     /* center horizontally */
+    justify-content: center; /* center horizontally */
     margin-top: 20px;
 }
 
 .items-table {
-    width: 40%;              /* take only 60% of screen */
-    background-color: #a2c4c9;     /* your background color */
-    color: #050811;              /* your text color */
+    width: 40%; /* take only 60% of screen */
+    background-color: #a2c4c9; /* your background color */
+    color: #050811; /* your text color */
     border-radius: 12px;
-    overflow: hidden;            /* keeps rounded corners clean */
-    border-collapse: collapse;  /* cleaner edges */
-    table-layout: fixed;     /* FIXES uneven header space */
+    overflow: hidden; /* keeps rounded corners clean */
+    border-collapse: collapse; /* cleaner edges */
+    table-layout: fixed; /* FIXES uneven header space */
     font-size: 1.1rem;
-    display: table;          /* ensures proper layout */
+    display: table; /* ensures proper layout */
 }
 
 /* Table header styling */
 .items-table thead th {
-    background-color: #7fa3a8;   /* slightly darker header */
+    background-color: #7fa3a8; /* slightly darker header */
     color: #050811;
     font-weight: bold;
     text-align: center;
@@ -165,52 +177,104 @@ input.form-control {
 
 /* Hover effect */
 .items-table tbody tr:hover {
-    background-color: #91b5ba;   /* subtle darker hover */
+    background-color: #91b5ba; /* subtle darker hover */
     color: #050811;
     cursor: pointer;
 }
+
 .items-table th,
 .items-table td {
-    padding: 14px 20px;          /* more space */
+    padding: 14px 20px; /* more space */
     text-align: center;
-    width: 50%;                  /* ⬅ both columns take equal width */
+    width: 50%; /* ⬅ both columns take equal width */
 }
+
+/* Container: fields + image side by side */
+.details-layout {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* align tops */
+    gap: 40px;
+    margin-top: 20px;
+}
+
+/* LEFT column: form */
 .item-details-form {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     gap: 12px;
-    margin-top: 20px;
+
 }
 
 /* One line: label + box */
 .detail-row {
     display: flex;
     align-items: center;
-    justify-content: center;
     gap: 12px;
     width: 100%;
 }
 
 /* Label on the left */
 .detail-label {
-    min-width: 120px;          /* adjust if you want wider/narrower */
+    min-width: 120px; /* adjust if you want wider/narrower */
     text-align: right;
-    color: #fc9d0d;            /* your orange */
+    color: #fc9d0d; /* your orange */
 }
 
 /* Smaller box, not full width */
 .detail-input {
-    max-width: 400px;          /* controls box width */
-    width: 60%;                /* keeps it responsive */
-    background-color: #a2c4c9; /* same as your other boxes */
+    max-width: 400px; /* controls box width */
+    width: 60%; /* keeps it responsive */
+    background-color: #a2c4c9;
     color: #050811;
 }
 
 /* Comment same size as others */
 .detail-comment {
-    resize: vertical;          /* user can stretch if needed */
+    resize: vertical;
     background-color: #a2c4c9 !important;
+}
+
+/* RIGHT column: image + (optional) file input */
+.details-image-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+
+}
+
+.details-image-panel .img-thumbnail {
+    max-width: 220px; /* adjust size if needed */
+    height: auto;
+}
+.details-header {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* or space-between if you want them farther apart */
+    gap: 20px;               /* space between title and QR */
+    margin-bottom: 40px;
+}
+
+.details-title {
+    margin: 0;               /* remove default h1 extra margin */
+}
+
+.details-qr {
+    display: flex;
+    align-items: center;
+}
+.qr-wrapper {
+    display: inline-block;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    cursor: pointer;
+}
+
+.qr-wrapper:hover {
+    transform: scale(1.2);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
 }
 
 

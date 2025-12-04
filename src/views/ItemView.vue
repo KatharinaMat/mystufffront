@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 v-if="isView">View item</h1>
+
     <h1 v-if="isAdd">Add new item</h1>
     <h1 v-if="isEdit">Edit item</h1>
 
@@ -19,41 +19,35 @@
       <Details
           :item="item"
           :mode="isAdd ? 'add' : 'view'"
+          :item-id="itemId"
+          :qr-value="item.imageQrLink"
+          @event-new-image-selected="item.imageData = $event"
+          @event-chosen-image-cleared="item.imageData = ''"
       />
-
-
-        <div :class="item.imageData ? 'col-md-6' : 'col-md-12'">
-          <div class="item-table-wrapper">
-            <NewComponent :item="item"/>
-            <QrcodeSvg :value="item.imageQrLink" size="400" level="H"/>
-          </div>
 
           <div class="mt-3">
             <button @click="goBack" class="btn btn-custom me-3">Back</button>
             <button @click="printItem" class="btn btn-custom me-3">Edit</button><!--todo peab tegema meetodit mis viib EditView'le*/-->
             <button @click="goBack" class="btn btn-custom me-3">Delete</button><!--todo peab tegema meetodit mis avab delete modali*/-->
 
-            <button @click="downloadQR" class="btn btn-custom me-3">Download QR</button>
-            <button @click="printItem" class="btn btn-custom">Print</button>
           </div>
         </div>
 
       </div>
 
-    </div>
+
 
 </template>
 
 <script>
 import ItemService from "@/services/ItemService";
-import {QrcodeCanvas, QrcodeSvg} from "qrcode.vue";
 import {useRoute} from "vue-router";
 import Details from "@/components/Details.vue";
 
 
 export default {
   name: "ItemView",
-  components: {Details, QrcodeCanvas, QrcodeSvg,},
+  components: {Details},
 
   data() {
     return {
@@ -106,13 +100,6 @@ export default {
       this.$router.back();
     },
 
-    downloadQR() {
-      // implement later
-    },
-
-    printItem() {
-      window.print();
-    }
   },
 
   mounted() {
