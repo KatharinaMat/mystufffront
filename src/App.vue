@@ -1,6 +1,6 @@
 <template>
 
-  <div v-if=true class="header-bar">
+  <div v-if="true" class="header-bar">
     <div  class="welcome-text">
       Welcome, {{ username || 'admin' }}!
     </div>
