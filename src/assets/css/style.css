@@ -247,8 +247,15 @@ input.form-control {
 }
 
 .details-image-panel .img-thumbnail {
-    max-width: 220px; /* adjust size if needed */
+    max-width: 200px; /* adjust size if needed */
     height: auto;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    cursor: pointer;
+
+}
+.details-image-panel:hover {
+    transform: scale(1.2);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
 }
 .details-header {
     display: flex;
