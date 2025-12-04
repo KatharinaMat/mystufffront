@@ -16,9 +16,10 @@
           </td>
           <td>{{ formatDate(item.itemDate) }}</td>
 
-          <td v-if="true">
-            <!--<font-awesome-icon @click="navigateToEditItem(item.itemId)" class="cursor-pointer me-3" icon="fa-solid fa-pen-to-square" />
-            <font-awesome-icon @click="displayDeleteItemModal(item.itemId)" class="cursor-pointer" icon="fa-solid fa-trash"/> -->
+          <td v-if="isLoggedIn">
+            <font-awesome-icon @click="navigateToEditItem(item.itemId)" class="cursor-pointer me-3" icon="fa-solid fa-pen-to-square"/>
+            <font-awesome-icon @click="displayDeleteItemModal(item.itemId)" class="cursor-pointer" icon="fa-solid fa-trash"/>
+            <font-awesome-icon @click="displayQrModal(item.itemId)" class="cursor-pointer" icon="fa-solid fa-qrcode"/>
           </td>
         </tr>
         </tbody>
@@ -32,7 +33,7 @@
 </template>
 <script>
 import SessionStorageService from "@/services/SessionStorageService";
-import ItemsService from "@/services/ItemService"; // Veendu, et failinimi on ItemService.js, mitte ItemsService.js
+import ItemsService from "@/services/ItemService";
 import NavigationService from "@/services/NavigationService";
 
 export default {
@@ -49,7 +50,7 @@ export default {
           itemDate: ''
         }
       ],
-
+      isLoggedIn: false
     }
   },
   methods: {
@@ -72,7 +73,6 @@ export default {
     }
   },
   beforeMount() {
-    this.isLoggedIn = SessionStorageService.isLoggedIn()
     this.isLoggedIn = SessionStorageService.isLoggedIn()
   },
   mounted() {
