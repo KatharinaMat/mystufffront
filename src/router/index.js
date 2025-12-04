@@ -4,13 +4,13 @@ import LoginView from "@/views/LoginView.vue";
 import NewAccountView from "@/views/NewAccountView.vue";
 import ItemsView from "@/views/ItemsView.vue";
 import ErrorView from "@/views/ErrorView.vue";
-import SelectedItemView from "@/views/SelectedItemView.vue";
+import ItemView from "@/views/ItemView.vue";
 
 
 const routes = [
     {
         path: '/',
-        name: 'HomeView',
+        name: 'homeRoute',
         component: HomeView
     },
     {
@@ -20,18 +20,18 @@ const routes = [
     },
     {
         path: '/new-account',
-        name: 'newAccount',
+        name: 'newAccountRoute',
         component: NewAccountView
     },
     {
         path:'/items',
-        name:'ItemsView',
+        name:'itemsRoute',
         component: ItemsView
     },
     {
         path: '/item',
-        name: 'SelectedItemView',
-        component: SelectedItemView
+        name: 'itemRoute',
+        component: ItemView
     },
 
 

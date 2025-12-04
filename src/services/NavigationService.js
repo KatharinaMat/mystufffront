@@ -2,12 +2,21 @@ import router from "@/router";
 
 export default {
     navigateToItemsView() {
-        router.push({name: 'ItemsView'})
+        router.push({name: 'itemsRoute'})
     },
     navigateToErrorView() {
-        router.push({name: 'ErrorView'})
+        router.push({name: 'errorRoute'})
     },
     navigateToHomeView() {
-        router.push({name:'HomeView'})
+        router.push({name: 'homeRoute'})
+    },
+
+    navigateToItemView(itemId) {
+        router.push({
+            name: 'itemRoute',
+            query: {
+                itemId: itemId
+            }
+        })
     }
 }

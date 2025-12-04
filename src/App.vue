@@ -1,4 +1,12 @@
 <template>
+
+
+  <font-awesome-icon v-if="true"
+      @click=""
+      class="logout-icon cursor-pointer"
+      icon="fa-solid fa-arrow-right-from-bracket"
+  />
+
   <router-view />
 </template>
 
@@ -29,3 +37,5 @@ nav a.router-link-exact-active {
   color: #869770;              /* or change this if you like */
 }
 </style>
+<script >
+</script>

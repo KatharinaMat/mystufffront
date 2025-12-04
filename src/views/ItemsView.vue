@@ -1,44 +1,41 @@
-
 <template>
   <div>
-    <HeaderComponent />
+    <HeaderComponent/>
     <div class="items-table-wrapper">
-    <table class="items-table" v-if="items.length >0">
-      <thead>
-      <tr>
-        <th scope="col">Item</th>
-        <th scope="col">Date</th>
-      </tr>
-      </thead>
-      <tbody>
-      <!-- table rows -->
-      <tr v-for="item in items" :key="item.itemId">
-        <td>
-          <router-link   :to="{ name: 'SelectedItemView', query: { itemId: item.itemId } }"
-                         class="item-link">
-            {{ item.itemName }}
-          </router-link>
-        </td>
-        <td>{{ formatDate(item.itemDate) }}</td>
+      <table class="items-table" v-if="items.length >0">
+        <thead>
+        <tr>
+          <th scope="col">Item</th>
+          <th scope="col">Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- table rows -->
+        <tr v-for="item in items" :key="item.itemId">
+          <td>
+            <a href="#" @click="navigateToItemView(item.itemId)">{{ item.itemName }}</a>
+          </td>
+          <td>{{ formatDate(item.itemDate) }}</td>
 
-        <td v-if="isLoggedIn">
-          <!--<font-awesome-icon @click="navigateToEditItem(item.itemId)" class="cursor-pointer me-3" icon="fa-solid fa-pen-to-square" />
-          <font-awesome-icon @click="displayDeleteItemModal(item.itemId)" class="cursor-pointer" icon="fa-solid fa-trash"/> -->
-        </td>
-      </tr>
-      </tbody>
-    </table>
+          <td v-if="true">
+            <!--<font-awesome-icon @click="navigateToEditItem(item.itemId)" class="cursor-pointer me-3" icon="fa-solid fa-pen-to-square" />
+            <font-awesome-icon @click="displayDeleteItemModal(item.itemId)" class="cursor-pointer" icon="fa-solid fa-trash"/> -->
+          </td>
+        </tr>
+        </tbody>
+      </table>
 
-    <div v-else class="text-muted">
-      You have no items yet :)
-    </div>
+      <div v-else class="text-muted">
+        You have no items yet :)
+      </div>
     </div>
   </div>
 </template>
 <script>
 import HeaderComponent from "@/components/Header.vue";
 import SessionStorageService from "@/services/SessionStorageService";
-import ItemsService from "@/services/ItemsService";
+import ItemsService from "@/services/ItemService";
+import NavigationService from "@/services/NavigationService";
 
 export default {
   name: "ItemsView",
@@ -47,19 +44,31 @@ export default {
   },
   data() {
     return {
-      /*deleteLocationModalIsOpen: false,-->*/
-      items: [],
-         }
+
+      items: [
+        {
+          itemId: 0,
+          itemName: '',
+          itemDate: ''
+        }
+      ],
+
+    }
   },
   methods: {
+    navigateToItemView(itemId) {
+      NavigationService.navigateToItemView(itemId)
+    },
     /*navigateToEditItem(itemId) {
       NavigationService.navigateToEditItem(itemId)
     },*/
 
     loadItems() {
       const userId = sessionStorage.getItem('userId');
-      ItemsService.sendGetItemsListRequest(userId)
-          .then(response => {this.items = response.data});
+      ItemsService.sendGetItemsRequest(userId)
+          .then(response => {
+            this.items = response.data
+          });
     },
     formatDate(dateString) {
       return new Date(dateString).toLocaleDateString('et-EE');
