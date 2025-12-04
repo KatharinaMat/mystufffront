@@ -1,32 +1,30 @@
 <template>
-    <div v-if=isLoggedIn class="header-bar">
-      <div class="welcome-text">
-        Welcome, {{ username || 'admin' }}!
-      </div>
 
-      <font-awesome-icon
-          @click="startLogOutProcess"
-          class="logout-icon cursor-pointer"
-          icon="fa-solid fa-arrow-right-from-bracket"
-      />
-
-      <LogOutModal
-          :log-out-modal-is-open="logOutModalIsOpen"
-          @event-close-modal="closeLogOutModal"
-          @event-log-out-executed="executeLogOut"
-      />
-
+  <div v-if=true class="header-bar">
+    <div  class="welcome-text">
+      Welcome, {{ username || 'admin' }}!
     </div>
-
-  <router-view />
+    <font-awesome-icon
+        @click="startLogOutProcess"
+        class="logout-icon cursor-pointer"
+        icon="fa-solid fa-arrow-right-from-bracket"
+    />
+  <LogOutModal
+      :log-out-modal-is-open="logOutModalIsOpen"
+      @event-close-modal="closeLogOutModal"
+      @event-log-out-executed="executeLogOut"
+  />
+  </div>
+  <router-view/>
 </template>
 
 <style>
 html, body {
   margin: 0;
   height: 100%;
-  background-color: #050811;   /* dark background for whole page */
+  background-color: #050811; /* dark background for whole page */
 }
+
 @import url('https://fonts.googleapis.com/css2?family=Comic+Relief&display=swap');
 
 #app {
@@ -45,7 +43,7 @@ nav a {
 }
 
 nav a.router-link-exact-active {
-  color: #869770;              /* or change this if you like */
+  color: #869770; /* or change this if you like */
 }
 </style>
 <script>
@@ -61,7 +59,7 @@ export default defineComponent({
     return {
       isLoggedIn: false,
       isAdmin: false,
-      username:'',
+      username: '',
       logOutModalIsOpen: false
     }
   },
@@ -75,11 +73,9 @@ export default defineComponent({
       this.logOutModalIsOpen = true
     },
 
-
     closeLogOutModal() {
       this.logOutModalIsOpen = false
     },
-
 
     executeLogOut() {
       this.closeLogOutModal()
@@ -87,6 +83,7 @@ export default defineComponent({
       this.updateNavMenu()
       NavigationService.navigateToHomeView();
     },
+
     updateNavMenu() {
       this.isLoggedIn = SessionStorageService.isLoggedIn()
       this.isAdmin = SessionStorageService.isAdmin()
