@@ -32,15 +32,13 @@
   </div>
 </template>
 <script>
-import HeaderComponent from "@/components/Header.vue";
 import SessionStorageService from "@/services/SessionStorageService";
-import ItemsService from "@/services/ItemService";
+import ItemsService from "@/services/ItemService"; // Veendu, et failinimi on ItemService.js, mitte ItemsService.js
 import NavigationService from "@/services/NavigationService";
 
 export default {
   name: "ItemsView",
   components: {
-    HeaderComponent,
   },
   data() {
     return {

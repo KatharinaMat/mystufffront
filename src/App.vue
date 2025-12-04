@@ -1,5 +1,21 @@
 <template>
+    <div class="header-bar">
+      <div v-if="isLoggedIn" class="welcome-text">
+        Welcome, {{ username || 'admin' }}!
+      </div>
 
+      <font-awesome-icon
+          @click="startLogOutProcess"
+          class="logout-icon cursor-pointer"
+          icon="fa-solid fa-arrow-right-from-bracket"
+      />
+
+      <LogOutModal
+          :log-out-modal-is-open="logOutModalIsOpen"
+          @event-close-modal="closeLogOutModal"
+          @event-log-out-executed="executeLogOut"
+      />
+    </div>
 
   <font-awesome-icon v-if="true"
       @click=""
@@ -38,4 +54,52 @@ nav a.router-link-exact-active {
 }
 </style>
 <script >
+import {defineComponent} from "vue";
+import LogOutModal from "@/modal/LogOutModal.vue";
+import NavigationService from "@/services/NavigationService";
+import SessionStorageService from "@/services/SessionStorageService";
+
+export default defineComponent({
+  components: {LogOutModal},
+  data() {
+    return {
+      isLoggedIn: false,
+      isAdmin: false,
+      username:'',
+      logOutModalIsOpen: false
+    }
+  },
+  methods: {
+
+    startLogOutProcess() {
+      this.openLogOutModal()
+    },
+
+    openLogOutModal() {
+      this.logOutModalIsOpen = true
+    },
+
+
+    closeLogOutModal() {
+      this.logOutModalIsOpen = false
+    },
+
+
+    executeLogOut() {
+      this.closeLogOutModal()
+      sessionStorage.clear()
+      this.updateNavMenu()
+      NavigationService.navigateToHomeView();
+    },
+    updateNavMenu() {
+      this.isLoggedIn = SessionStorageService.isLoggedIn()
+      this.isAdmin = SessionStorageService.isAdmin()
+      this.username = SessionStorageService.getUsername()
+    },
+
+  },
+  beforeMount() {
+    this.updateNavMenu()
+  }
+})
 </script>

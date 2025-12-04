@@ -54,14 +54,13 @@
 </template>
 
 <script>
-import HeaderComponent from "@/components/Header.vue";
 import ItemService from "@/services/ItemService";
 import {QrcodeCanvas, QrcodeSvg} from "qrcode.vue";
 import {useRoute} from "vue-router";
 
 export default {
   name: "ItemView",
-  components: {QrcodeCanvas, QrcodeSvg, HeaderComponent},
+  components: {QrcodeCanvas, QrcodeSvg,},
 
   data() {
     return {
