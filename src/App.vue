@@ -1,6 +1,6 @@
 <template>
-    <div class="header-bar">
-      <div v-if="isLoggedIn" class="welcome-text">
+    <div v-if=isLoggedIn class="header-bar">
+      <div class="welcome-text">
         Welcome, {{ username || 'admin' }}!
       </div>
 
@@ -15,13 +15,8 @@
           @event-close-modal="closeLogOutModal"
           @event-log-out-executed="executeLogOut"
       />
-    </div>
 
-  <font-awesome-icon v-if="true"
-      @click=""
-      class="logout-icon cursor-pointer"
-      icon="fa-solid fa-arrow-right-from-bracket"
-  />
+    </div>
 
   <router-view />
 </template>
