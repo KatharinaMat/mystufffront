@@ -1,8 +1,8 @@
 <template>
 
-  <div v-if="true" class="header-bar">
+  <div v-if="isLoggedIn" class="header-bar">
     <div  class="welcome-text">
-      Welcome, {{ username || 'admin' }}!
+      Welcome, {{ this.username}}!
     </div>
     <font-awesome-icon
         @click="startLogOutProcess"
@@ -15,7 +15,7 @@
       @event-log-out-executed="executeLogOut"
   />
   </div>
-  <router-view/>
+  <router-view @event-user-logged-in="updateNavMenu"/>
 </template>
 
 <style>

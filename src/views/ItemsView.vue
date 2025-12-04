@@ -1,6 +1,5 @@
 <template>
   <div>
-    <HeaderComponent/>
     <div class="items-table-wrapper">
       <table class="items-table" v-if="items.length >0">
         <thead>
