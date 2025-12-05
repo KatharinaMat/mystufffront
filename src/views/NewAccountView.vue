@@ -28,11 +28,16 @@
             <label>Username</label>
           </div>
           <div class="form-floating mb-3">
-            <input v-model="password" type="password" class="form-control" placeholder="Enter Password">
+            <input v-model="password" :type="showPassword ? 'text' : 'password'" class="form-control" placeholder="Enter Password">
             <label>Password</label>
+            <font-awesome-icon
+                :icon="showPassword ? 'fa-regular fa-eye-slash' : 'fa-regular fa-eye'"
+                class="password-toggle-icon"
+                @click="togglePassword"
+            />
           </div>
           <div class="form-floating mb-3">
-            <input v-model="username" type="password" class="form-control" placeholder="Enter E-mail">
+            <input v-model="email" type="text" class="form-control" placeholder="Enter E-mail">
             <label>E-mail</label>
           </div>
           <div class="form-floating">
@@ -61,7 +66,20 @@ h1 {
 </style>
 
 <script>
+import AlertDanger from "@/modal/AlertDanger.vue";
+
 export default {
-  name: 'HomeView'
+  name: 'NewAccountView',
+  components: {AlertDanger},
+  data() {
+    return {
+      showPassword: false,
+    }
+  },
+  methods: {
+    togglePassword() {
+      this.showPassword = !this.showPassword
+    },
+  }
 }
 </script>
