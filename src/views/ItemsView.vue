@@ -1,4 +1,5 @@
 <template>
+
   <div>
     <div class="items-table-wrapper">
       <table class="items-table" v-if="items.length >0">
@@ -16,10 +17,11 @@
           </td>
           <td>{{ formatDate(item.itemDate) }}</td>
 
-          <td v-if="isLoggedIn">
-            <font-awesome-icon @click="navigateToEditItem(item.itemId)" class="cursor-pointer me-3" icon="fa-solid fa-pen-to-square"/>
-            <font-awesome-icon @click="navigateToDeleteItemModal(item.itemId)" class="cursor-pointer" icon="fa-solid fa-trash"/>
-            <font-awesome-icon @click="navigateToQrModal(item.itemId)" class="cursor-pointer" icon="fa-solid fa-qrcode"/>
+          <td>
+            <font-awesome-icon icon="pen-to-square" /> <!--@click="navigateToEditItem(item.itemId)" class="cursor-pointer me-3" -->
+            <font-awesome-icon icon="trash"/> <!--@click="navigateToDeleteItemModal(item.itemId)" class="cursor-pointer me-3" -->
+            <font-awesome-icon icon="qrcode"/> <!--@click="navigateToQrCodeModal(item.itemId)" class="cursor-pointer" -->
+            <font-awesome-icon icon="arrow-right-from-bracket" />
           </td>
         </tr>
         </tbody>
@@ -64,7 +66,7 @@ export default {
       NavigationService.navigateToDeleteItemModal(itemId)
     },
     navigateToQrModal(itemId) {
-      NavigationService.navigateToQrModal(itemId)
+      NavigationService.navigateToQrCodeModal(itemId)
     },
     loadItems() {
       const userId = sessionStorage.getItem('userId');

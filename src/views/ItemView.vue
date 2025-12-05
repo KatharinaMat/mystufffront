@@ -27,8 +27,10 @@
 
           <div class="mt-3">
             <button @click="goBack" class="btn btn-custom me-3">Back</button>
-            <button @click="printItem" class="btn btn-custom me-3">Edit</button><!--todo peab tegema meetodit mis viib EditView'le*/-->
+            <button v-if="isView" @click="printItem" class="btn btn-custom me-3">Edit</button><!--todo peab tegema meetodit mis viib ?EditView'le*/-->
             <button @click="goBack" class="btn btn-custom me-3">Delete</button><!--todo peab tegema meetodit mis avab delete modali*/-->
+            <button v-if="isEdit" @click="saveUpdatedItem" class="btn btn-custom me-3">Save</button><!--todo peab tegema meetodit mis salvestab muutused*/-->
+
 
           </div>
         </div>
@@ -110,8 +112,3 @@ export default {
 };
 </script>
 
-<style scoped>
-.table th {
-  width: 30%;
-}
-</style>
