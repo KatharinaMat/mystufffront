@@ -1,6 +1,6 @@
 <template>
   <div v-if="isView" class="details-header">
-  <h1 class="details-title">View item #{{itemId}}</h1>
+  <h1 class="details-title">View item #{{item.itemName}}</h1>
     <div v-if="qrValue" class="details-qr">
     <QrImage :value="qrValue" />
   </div>
@@ -55,6 +55,7 @@ export default {
   name: "Details",
   components: {ImageInput, ItemImage, QrImage},
   props: {
+    isView: Boolean,
     // parent gives you an object like { itemName: '', itemDate: '', ... }
     item: {
       type: Object,
@@ -72,11 +73,6 @@ export default {
     qrValue: {
       type: String,
       default: ''
-    }
-  },
-  computed: {
-    isView() {
-      return this.mode === 'view'
     }
   },
   methods: {

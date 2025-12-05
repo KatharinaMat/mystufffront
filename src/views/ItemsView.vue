@@ -28,7 +28,7 @@
         </tbody>
       </table>
 
-      <div v-else class="text-muted">
+      <div v-else>
         You have no items yet :)
       </div>
     </div>

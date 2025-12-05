@@ -25,6 +25,7 @@ h1 {
     color: #fc9d0d;
 }
 
+
 a {
     display: inline-block; /* allows scaling */
     transition: transform 0.2s ease; /* smooth animation */
