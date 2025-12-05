@@ -7,6 +7,7 @@
         <tr>
           <th scope="col">Item</th>
           <th scope="col">Date</th>
+          <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
@@ -18,10 +19,10 @@
           <td>{{ formatDate(item.itemDate) }}</td>
 
           <td>
-            <font-awesome-icon icon="pen-to-square" /> <!--@click="navigateToEditItem(item.itemId)" class="cursor-pointer me-3" -->
-            <font-awesome-icon icon="trash"/> <!--@click="navigateToDeleteItemModal(item.itemId)" class="cursor-pointer me-3" -->
-            <font-awesome-icon icon="qrcode"/> <!--@click="navigateToQrCodeModal(item.itemId)" class="cursor-pointer" -->
-            <font-awesome-icon icon="arrow-right-from-bracket" />
+            <font-awesome-icon @click="navigateToEditItem(item.itemId)" class="table-icon me-3" icon="pen-to-square" />
+            <font-awesome-icon @click="navigateToDeleteItemModal(item.itemId)" class="table-icon me-3" icon="trash"/>
+            <font-awesome-icon @click="navigateToQrCodeModal(item.itemId)" class="table-icon" icon="qrcode"/>
+
           </td>
         </tr>
         </tbody>
@@ -65,8 +66,8 @@ export default {
     navigateToDeleteItemModal(itemId) {
       NavigationService.navigateToDeleteItemModal(itemId)
     },
-    navigateToQrModal(itemId) {
-      NavigationService.navigateToQrCodeModal(itemId)
+    navigateToQrModal() {
+      NavigationService.navigateToQrCodeModal()
     },
     loadItems() {
       const userId = sessionStorage.getItem('userId');
