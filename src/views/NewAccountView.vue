@@ -15,8 +15,10 @@
     </div>
     <div v-if="displayAddUserForm" class="row justify-content-center">
       <div class="col col-4">
-        <UsernameInput :username="user.username" :username-error="usernameError" @event-username-updated="setUserUsername"/>
-        <PasswordInput :password="user.password" :password-error="passwordError" @event-password-updated="setUserPassword"/>
+        <UsernameInput :username="user.username" :username-error="usernameError"
+                       @event-username-updated="setUserUsername"/>
+        <PasswordInput :password="user.password" :password-error="passwordError"
+                       @event-password-updated="setUserPassword"/>
 
         <div class="form-floating mb-3">
           <input v-model="user.email" type="email" class="form-control"
@@ -47,6 +49,8 @@ import NavigationService from "@/services/NavigationService";
 import UsernameInput from "@/views/UsernameInput.vue";
 import PasswordInput from "@/views/PasswordInput.vue";
 import PasswordService from "@/services/PasswordService";
+import UsernameService from "@/services/UsernameService";
+import EmailService from "@/services/EmailService";
 
 
 export default {
@@ -105,23 +109,10 @@ export default {
     },
 
     validateFromInput() {
-      if (this.user.username.length < 3) {
-        this.usernameError = 'Username must be at least 3 characters'
-      }
-
+      this.usernameError = UsernameService.handleUsernameValidationError(this.user.username)
       this.passwordError = PasswordService.handlePasswordValidationError(this.user.password)
-
-      if (!this.emailInputIsValid()) {
-        this.emailError = 'Please enter a valid email address';
-      }
-    },
-
-
-    emailInputIsValid() {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-      return emailRegex.test(this.user.email)
-    },
-
+      this.emailError = EmailService.handleEmailValidationError(this.user.email)
+      },
 
     handleAddNewUserError(error) {
       this.errorResponse = error.response.data
