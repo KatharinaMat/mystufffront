@@ -6,14 +6,7 @@
     <div class="container text-center">
       <div class="row">
         <div>
-          <nav class="home-links">
-            <h3>
-              <router-link to="/login">Login</router-link>
-            </h3>
-            <h3>
-              <router-link to="/new-account">Create account</router-link>
-            </h3>
-          </nav>
+          <LoginCreateAccountMenu/>
           <img src="@/assets/background_picture.webp" alt="background" class="home-image">
 
         </div>
@@ -44,7 +37,10 @@ h1 {
 </style>
 
 <script>
+import LoginCreateAccountMenu from "@/components/LoginCreateAccountMenu.vue";
+
 export default {
-  name: 'HomeView'
+  name: 'HomeView',
+  components: {LoginCreateAccountMenu}
 }
 </script>

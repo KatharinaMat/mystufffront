@@ -13,24 +13,14 @@
     <div class="container text-center">
       <div class="row">
         <div>
-          <nav class="home-links">
-            <h3>
-              <router-link to="/login">Login</router-link>
-            </h3>
-            <h3>
-              <router-link to="/new-account">Create account</router-link>
-            </h3>
-          </nav>
+          <LoginCreateAccountMenu/>
         </div>
       </div>
     </div>
     <div class="container text-center">
       <div class="row justify-content-center">
         <div class="col-10 col-md-6 col-lg-4">
-          <div class="form-floating mb-3">
-            <input v-model="username" type="text" class="form-control" placeholder="Username">
-            <label>Username</label>
-          </div>
+          <UsernameInput :username="username" @event-username-updated="setUsername"/>
           <div class="form-floating mb-3">
             <input v-model="password" :type="showPassword ? 'text' : 'password'" class="form-control" placeholder="Password">
             <label>Password</label>
@@ -70,10 +60,12 @@ import LoginService from "@/services/LoginService";
 import AlertDanger from "@/modal/AlertDanger.vue";
 import NavigationService from "@/services/NavigationService";
 import SessionStorageService from "@/services/SessionStorageService";
+import LoginCreateAccountMenu from "@/components/LoginCreateAccountMenu.vue";
+import UsernameInput from "@/views/UsernameInput.vue";
 
 export default {
   name: 'LoginView',
-  components: {AlertDanger},
+  components: {UsernameInput, LoginCreateAccountMenu, AlertDanger},
   data() {
     return {
       username: '',
@@ -89,7 +81,15 @@ export default {
       errorResponse: {
         message: '',
         errorCode: 0
-      }
+      },
+
+      validationError: {
+        username: '',
+        password: ''
+      },
+
+
+
     }
   },
   methods: {
@@ -158,6 +158,10 @@ export default {
 
     resetAlertMessage() {
       this.alertMessage = ''
+    },
+
+    setUsername(username) {
+      this.username = username
     },
 
   }

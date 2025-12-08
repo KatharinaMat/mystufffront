@@ -247,7 +247,7 @@ input.form-control {
     background-color: #a2c4c9 !important;
 }
 
-/* RIGHT column: image + (optional) file input */
+
 .details-image-panel {
     display: flex;
     flex-direction: column;
@@ -264,7 +264,8 @@ input.form-control {
     cursor: pointer;
 
 }
-.details-image-panel:hover {
+
+.details-image-panel .img-thumbnail:hover {
     transform: scale(1.2);
     box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
 }

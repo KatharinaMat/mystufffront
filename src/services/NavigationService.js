@@ -1,6 +1,9 @@
 import router from "@/router";
 
 export default {
+    navigateToLoginView() {
+        router.push({name: 'loginRoute'})
+    },
     navigateToItemsView() {
         router.push({name: 'itemsRoute'})
     },
@@ -14,9 +17,7 @@ export default {
 
     },
 
-    navigateToQrModal() {
 
-    },
     navigateToItemView(itemId) {
         router.push({
             name: 'itemRoute',
