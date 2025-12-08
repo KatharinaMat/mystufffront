@@ -4,6 +4,13 @@
     <h1 v-if="isAdd">Add new item</h1>
     <h1 v-if="isEdit">Edit item #{{item.itemName}}</h1>
 
+    <div v-if="errorMessage" class="alert alert-danger m-3">
+      {{ errorMessage }}
+    </div>
+    <div v-if="successMessage" class="alert alert-success m-3">
+      {{ successMessage }}
+    </div>
+
     <!-- Simple loading + error handling -->
     <div v-if="loading" class="text-center mt-5">
       <div class="spinner-border" role="status">
@@ -34,7 +41,7 @@
         <button v-if="isEdit" @click="disableEdit" class="btn btn-custom me-3">Close edit</button>
         <button v-if="isEdit" @click="" class="btn btn-custom me-3">Save</button>
 
-        <button v-if="isAdd" @click="" class="btn btn-custom me-3">Add</button>
+        <button v-if="isAdd" @click="processAddItem" class="btn btn-custom me-3">Add</button>
 
       </div>
     </div>
@@ -58,6 +65,9 @@ export default {
   data() {
     return {
       itemId: Number(useRoute().query.itemId),
+      errorMessage: '',
+      successMessage: '',
+      resetImageInput: false,
       isView: false,
       isAdd: false,
       isEdit: false,
@@ -79,8 +89,27 @@ export default {
   },
 
   methods: {
-
-
+    processAddItem() {
+      this.resetMessages()
+      this.handleInputErrorMessages();
+      if(this.requiredFieldsHaveCorrectInput()) {
+        this.executeAddItem();
+      }
+    },
+    handleInputErrorMessages() {
+      if (this.item.itemName === '') {
+        this.errorMessage = 'Please enter item Name'
+      } else if (this.item.itemDate === '') {
+        this.errorMessage = 'Please select Date of purchase'
+      }
+    },
+    resetMessages() {
+      this.errorMessage = ''
+      this.successMessage = ''
+    },
+    requiredFieldsHaveCorrectInput() {
+      return this.errorMessage === '';
+    },
     loadItem() {
       this.startLoadingSpinner()
       ItemService.sendGetItemRequest(this.itemId)
@@ -96,6 +125,29 @@ export default {
           .finally(() => {
             this.stopLoadingSpinner()
           });
+    },
+
+    executeAddItem() {
+      ItemService.sendPostItemRequest(this.item)
+          .then(() => this.handleAddItemResponse())
+          .catch(error => this.itemNameAlreadyExists(error))
+    },
+    handleAddItemResponse () {
+      this.successMessage = 'New item "' + this.item.itemName + '" has been added!'
+      setTimeout(this.resetMessages, 4000)
+      this.resetAllFields()
+    },
+    itemNameAlreadyExists(error) {
+      return error.response.status === 403 && this.errorResponse.errorCode===333;
+    },
+
+    resetAllFields() {
+      this.item.itemName = ''
+      this.item.itemDate = ''
+      this.item.model = ''
+      this.item.comment = ''
+      this.item.imageData = ''
+      this.resetImageInput = true
     },
 
     startLoadingSpinner() {
