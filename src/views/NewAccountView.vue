@@ -19,18 +19,8 @@
                        @event-username-updated="setUserUsername"/>
         <PasswordInput :password="user.password" :password-error="passwordError"
                        @event-password-updated="setUserPassword"/>
-
-        <div class="form-floating mb-3">
-          <input v-model="user.email" type="email" class="form-control"
-                 :class="{ 'is-invalid': emailError }"
-                 placeholder="Email">
-          <label>Email</label>
-
-          <div class="invalid-feedback">
-            {{ emailError }}
-          </div>
-
-        </div>
+        <EmailInput :email="user.email" :email-error="emailError"
+                      @event-email-updated = "setUserEmail"/>
 
         <div class="form-floating">
           <button @click="addNewUser" type="button" class="btn btn-custom btn-large">Sign up!</button>
@@ -40,6 +30,12 @@
     </div>
   </div>
 </template>
+<style scoped>
+h1 {
+  margin-top: 30px; /* to push the h1 lower */
+  margin-bottom: 40px; /*to push the next block lower*/
+}
+</style>
 
 <script>
 import AlertSuccess from "@/modal/AlertSuccess.vue";
@@ -51,11 +47,12 @@ import PasswordInput from "@/views/PasswordInput.vue";
 import PasswordService from "@/services/PasswordService";
 import UsernameService from "@/services/UsernameService";
 import EmailService from "@/services/EmailService";
+import EmailInput from "@/views/EmailInput.vue";
 
 
 export default {
   name: 'NewAccountView',
-  components: {PasswordInput, UsernameInput, LoginCreateAccountMenu, AlertSuccess},
+  components: {EmailInput, PasswordInput, UsernameInput, LoginCreateAccountMenu, AlertSuccess},
   data() {
     return {
       alertSuccessMessage: '',
@@ -77,7 +74,6 @@ export default {
         message: '',
         errorCode: 0
       }
-
 
     }
   },
@@ -125,7 +121,6 @@ export default {
       }
     },
 
-
     resetValidationErrors() {
       this.usernameError = ''
       this.passwordError = ''
@@ -140,7 +135,9 @@ export default {
       this.user.password = password
     },
 
-
+    setUserEmail(email) {
+      this.user.email = email
+    }
   },
   mounted() {
   }

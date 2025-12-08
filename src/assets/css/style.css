@@ -36,6 +36,18 @@ a:hover {
     color: #869770; /* change color */
 }
 
+.home-links {
+    display: flex; /*Makes the children ("LogIn" & "Create account") sit next to each other horizontally by default.*/
+    justify-content: center;
+    gap: 40px; /*gap between links*/
+    margin-bottom: 40px; /*to push the next block lower*/
+}
+.home-image {
+    display: block;
+    margin: 40px auto 0 auto; /* top margin + centered */
+    max-width: 400px; /* prevents the picture from getting too big */
+    height: auto; /* keeps proportions */
+}
 input.form-control {
     background-color: #a2c4c9 !important;
 }
@@ -295,6 +307,8 @@ input.form-control {
     transform: scale(1.2);
     box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
 }
+
+
 
 
 
