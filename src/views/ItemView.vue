@@ -214,9 +214,13 @@ export default {
 
     handleDeleteImage() {
       alert("Pilt kustutatud")
-      // todo: delete image (sõnumiga -> this.itemId)
-      // todo: reset this.image.imageData
+      // Clear the image data on the item
+      this.item.imageData = ''
+      // Optionally also reset input if ItemDetails listens to this
+      this.resetImageInput = true
+      // TODO: call backend to delete image for this.itemId if needed
     },
+
 
   },
 

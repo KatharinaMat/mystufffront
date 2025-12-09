@@ -19,6 +19,10 @@ export default {
     navigateToAddItem() {
         router.push({name: 'itemRoute'});
     },
+    navigateToAddItem() {
+        router.push({name: 'itemRoute'});
+    },
+
 
     navigateToItemView(itemId) {
         router.push({
