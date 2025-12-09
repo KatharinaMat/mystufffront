@@ -35,8 +35,13 @@
           @event-new-image-selected="setItemImageData"
           @event-chosen-image-cleared="handleDeleteImage"
           @event-item-updated="processUpdateItem"
-      />
 
+      />
+      <DeleteItemModal
+          :delete-item-modal-is-open="deleteItemModalIsOpen"
+          @event-close-modal="closeDeleteItemModal"
+          @event-confirm-delete="deleteItem"
+      />
 
 
       <div class="mt-3">
@@ -66,11 +71,12 @@ import NavigationService from "@/services/NavigationService";
 import SessionStorageService from "@/services/SessionStorageService";
 import QrCodeService from "@/services/QrCodeService";
 import QrCodeModal from "@/modal/QrCodeModal.vue";
+import DeleteItemModal from "@/modal/DeleteItemModal.vue";
 
 
 export default {
   name: "ItemView",
-  components: {ItemDetails, QrCodeModal},
+  components: {ItemDetails, QrCodeModal, DeleteItemModal},
 
   data() {
     return {
@@ -83,7 +89,7 @@ export default {
       isAdd: false,
       isEdit: false,
       qrCode: '',
-      deleteLocationModalIsOpen: false,
+      deleteItemModalIsOpen: false,
       selectedItemId: 0,
 
       item: {
@@ -183,15 +189,22 @@ export default {
       sessionStorage.setItem('successMessage', 'Item "' + this.item.itemName + '" updated succesfully')
       NavigationService.navigateToItemsView()
     },
-    displayDeleteItemModal(itemId){
-      this.selestedItemId = itemId
-      ItemService.sendDeleteItem(itemId)
+    displayDeleteItemModal() {
+      this.deleteItemModalIsOpen = true;
+    },
+    closeDeleteItemModal() {
+      this.deleteItemModalIsOpen = false;
+    },
+
+    deleteItem(){
+      ItemService.sendDeleteItem(this.itemId)
           .then(response => this.handleDisplayDeleteItemModalResponse(response))
           .catch(() => NavigationService.navigateToErrorView())
     },
     handleDisplayDeleteItemModalResponse(response) {
       this.item = response.data
       this.openDeleteItemModal()
+      NavigationService.navigateToItemsView()
     },
     openDeleteItemModal() {
       this.deleteItemModalIsOpen = true
