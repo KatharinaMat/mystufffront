@@ -24,5 +24,20 @@ export default {
                 itemId: itemId
             }
         })
-    }
+    },
+    sendPutItemRequest(itemId, item) {
+        return axios.put('/item', item,  {
+            params: {
+                itemId: itemId
+            }
+        })
+    },
+
+    sendDeleteItem(itemId) {
+        return axios.delete('/item', {
+            params: {
+                itemId: itemId
+            }
+        })
+    },
 }

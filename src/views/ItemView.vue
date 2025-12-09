@@ -34,7 +34,7 @@
           @event-item-comment-updated="setItemComment"
           @event-new-image-selected="setItemImageData"
           @event-chosen-image-cleared="handleDeleteImage"
-          @event-open-qr-modal="qrCodeModalIsOpen = true"
+          @event-item-updated="processUpdateItem"
       />
 
 
@@ -42,11 +42,11 @@
       <div class="mt-3">
         <button v-if="isView || isAdd" @click="goBack" class="btn btn-custom me-3">Back</button>
         <button v-if="isView" @click="enableEdit" class="btn btn-custom me-3">Edit</button>
-        <button v-if="isView" @click="goBack" class="btn btn-custom me-3">Delete</button>
-        <!--todo peab tegema meetodit mis avab delete modali*/-->
+        <button v-if="isView" @click="displayDeleteItemModal" class="btn btn-custom me-3">Delete</button>
+
 
         <button v-if="isEdit" @click="disableEdit" class="btn btn-custom me-3">Close edit</button>
-        <button v-if="isEdit" @click="" class="btn btn-custom me-3">Save</button>
+        <button v-if="isEdit" @click="processUpdateItem" type="submit" class="btn btn-custom me-3">Save</button>
 
         <button v-if="isAdd" @click="processAddItem" class="btn btn-custom me-3">Add</button>
 
@@ -83,6 +83,8 @@ export default {
       isAdd: false,
       isEdit: false,
       qrCode: '',
+      deleteLocationModalIsOpen: false,
+      selectedItemId: 0,
 
       item: {
         itemName: '',
@@ -163,6 +165,36 @@ export default {
     },
     itemNameAlreadyExists(error) {
       return error.response.status === 403 && this.errorResponse.errorCode === 333;
+    },
+
+    processUpdateItem() {
+      this.resetMessages()
+      this.handleInputErrorMessages()
+      if (this.requiredFieldsHaveCorrectInput()) {
+        this.executeUpdateItem();
+      }
+    },
+    executeUpdateItem() {
+      ItemService.sendPutItemRequest(this.itemId, this.item)
+          .then(() => this.handleUpdateItemResponse())
+          .catch(() => NavigationService.navigateToErrorView())
+    },
+    handleUpdateItemResponse() {
+      sessionStorage.setItem('successMessage', 'Item "' + this.item.itemName + '" updated succesfully')
+      NavigationService.navigateToItemsView()
+    },
+    displayDeleteItemModal(itemId){
+      this.selestedItemId = itemId
+      ItemService.sendDeleteItem(itemId)
+          .then(response => this.handleDisplayDeleteItemModalResponse(response))
+          .catch(() => NavigationService.navigateToErrorView())
+    },
+    handleDisplayDeleteItemModalResponse(response) {
+      this.item = response.data
+      this.openDeleteItemModal()
+    },
+    openDeleteItemModal() {
+      this.deleteItemModalIsOpen = true
     },
 
     resetAllFields() {
