@@ -16,7 +16,9 @@ export default {
     navigateToEditItem() {
 
     },
-
+    navigateToAddItem() {
+        router.push({name: 'itemRoute'});
+    },
 
     navigateToItemView(itemId) {
         router.push({

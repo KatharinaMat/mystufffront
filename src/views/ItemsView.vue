@@ -1,6 +1,9 @@
 <template>
-
+  <button class="btn btn-custom mb-3" @click="navigateToAddItem">
+    Add New Item +
+  </button>
   <div>
+    <div></div>
     <div class="items-table-wrapper">
       <table class="items-table" v-if="items.length >0">
         <thead>
@@ -34,6 +37,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import SessionStorageService from "@/services/SessionStorageService";
 import ItemsService from "@/services/ItemService";
@@ -57,6 +61,9 @@ export default {
     }
   },
   methods: {
+    navigateToAddItem() {
+      NavigationService.navigateToAddItem()
+    },
     navigateToItemView(itemId) {
       NavigationService.navigateToItemView(itemId)
     },
@@ -66,7 +73,7 @@ export default {
     navigateToDeleteItemModal(itemId) {
       NavigationService.navigateToDeleteItemModal(itemId)
     },
-    navigateToQrModal() {
+    navigateToQrCodeModal() {
       NavigationService.navigateToQrCodeModal()
     },
     loadItems() {
