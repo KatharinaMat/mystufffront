@@ -1,6 +1,7 @@
 <template>
   <div>
-    <QrCodeModal :qr-code-modal-is-open="qrCodeModalIsOpen" :qr-code="qrCode"/>
+    <QrCodeModal :qr-code-modal-is-open="qrCodeModalIsOpen" :qr-code="qrCode"
+                 @event-close-modal="qrCodeModalIsOpen = false"/>
 
     <div v-if="qrCode" class="qr-wrapper" @click="handleClick">
       <QrcodeSvg :value="qrCode" :size="size" :level="level"/>

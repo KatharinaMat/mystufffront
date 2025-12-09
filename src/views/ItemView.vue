@@ -23,6 +23,7 @@
     </div>
 
     <div v-else>
+
       <ItemDetails
           :is-view="isView"
           :item="item"
@@ -33,7 +34,10 @@
           @event-item-comment-updated="setItemComment"
           @event-new-image-selected="setItemImageData"
           @event-chosen-image-cleared="handleDeleteImage"
+          @event-open-qr-modal="qrCodeModalIsOpen = true"
       />
+
+
 
       <div class="mt-3">
         <button v-if="isView || isAdd" @click="goBack" class="btn btn-custom me-3">Back</button>
@@ -61,11 +65,12 @@ import ItemDetails from "@/components/ItemDetails.vue";
 import NavigationService from "@/services/NavigationService";
 import SessionStorageService from "@/services/SessionStorageService";
 import QrCodeService from "@/services/QrCodeService";
+import QrCodeModal from "@/modal/QrCodeModal.vue";
 
 
 export default {
   name: "ItemView",
-  components: {ItemDetails},
+  components: {ItemDetails, QrCodeModal},
 
   data() {
     return {
@@ -77,7 +82,6 @@ export default {
       isView: false,
       isAdd: false,
       isEdit: false,
-
       qrCode: '',
 
       item: {
@@ -214,13 +218,9 @@ export default {
 
     handleDeleteImage() {
       alert("Pilt kustutatud")
-      // Clear the image data on the item
-      this.item.imageData = ''
-      // Optionally also reset input if ItemDetails listens to this
-      this.resetImageInput = true
-      // TODO: call backend to delete image for this.itemId if needed
+      // todo: delete image (sõnumiga -> this.itemId)
+      // todo: reset this.image.imageData
     },
-
 
   },
 
