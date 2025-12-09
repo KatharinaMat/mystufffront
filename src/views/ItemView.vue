@@ -26,7 +26,7 @@
       <ItemDetails
           :is-view="isView"
           :item="item"
-          :image-qr-path="imageQrPath"
+          :qr-code="qrCode"
           @event-item-name-updated="setItemItemName"
           @event-item-date-updated="setItemItemDate"
           @event-item-model-updated="setItemModel"
@@ -60,6 +60,7 @@ import {useRoute} from "vue-router";
 import ItemDetails from "@/components/ItemDetails.vue";
 import NavigationService from "@/services/NavigationService";
 import SessionStorageService from "@/services/SessionStorageService";
+import QrCodeService from "@/services/QrCodeService";
 
 
 export default {
@@ -77,7 +78,7 @@ export default {
       isAdd: false,
       isEdit: false,
 
-      imageQrPath: '',
+      qrCode: '',
 
       item: {
         itemName: '',
@@ -122,6 +123,7 @@ export default {
     requiredFieldsHaveCorrectInput() {
       return this.errorMessage === '';
     },
+
     loadItem() {
       this.startLoadingSpinner()
       ItemService.sendGetItemRequest(this.itemId)
@@ -137,6 +139,12 @@ export default {
           .finally(() => {
             this.stopLoadingSpinner()
           });
+    },
+
+    getQrCode() {
+      QrCodeService.sendGetQrCodeRequest(this.itemId)
+          .then(response => this.qrCode = response.data )
+          .catch(() => NavigationService.navigateToErrorView())
     },
 
     executeAddItem() {
@@ -218,6 +226,7 @@ export default {
 
     if (this.isView) {
       this.loadItem();
+      this.getQrCode()
     }
 
   }

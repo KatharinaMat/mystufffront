@@ -1,21 +1,24 @@
 <template>
-  <!-- Render QR only if there is a value -->
-  <div v-if="value" class="qr-wrapper" @click="handleClick">
-    <QrcodeSvg :value="value" :size="size" :level="level"/>
+  <div>
+    <QrCodeModal :qr-code-modal-is-open="qrCodeModalIsOpen" :qr-code="qrCode"/>
+
+    <div v-if="qrCode" class="qr-wrapper" @click="handleClick">
+      <QrcodeSvg :value="qrCode" :size="size" :level="level"/>
+    </div>
+
   </div>
+
 </template>
 
 <script>
 import {QrcodeSvg} from "qrcode.vue";
+import QrCodeModal from "@/modal/QrCodeModal.vue";
 
 export default {
   name: "QrImage",
-  components: {QrcodeSvg},
+  components: {QrCodeModal, QrcodeSvg},
   props: {
-    value: {
-      type: String,
-      required: true
-    },
+    qrCode: String,
     size: {
       type: [Number, String],
       default: 100
@@ -25,7 +28,21 @@ export default {
       default: "H"
     },
 
+  },
+  data() {
+    return {
+      qrCodeModalIsOpen: false,
+    }
+  },
+  methods: {
+    handleClick() {
+      this.qrCodeModalIsOpen = true
+    },
   }
 };
 </script>
 
+<script setup lang="ts">
+</script>
+<script setup lang="ts">
+</script>

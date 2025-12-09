@@ -1,25 +1,36 @@
 <template>
-  <Modal :modal-is-open="qRCodeModalIsOpen"
+  <Modal :modal-is-open="qrCodeModalIsOpen"
          @event-close-modal="$emit('event-close-modal')"
   >
- <!--Siis peaks tulema QR koodi image from QrImage.vue-->
 
-    <template>
 
-<!--      <button @click="printQrImage" type="submit" class="btn btn-custom">Print</button>
-      <button @click="downloadQrImage" type="submit" class="btn btn-custom">Download</button>-->
+    <template #body>
+      <QrcodeSvg :value="qrCode" :size="size" :level="level"/>
+    </template>
+    <template #buttons>
+      <button @click="printQrImage" type="submit" class="btn btn-custom">Print</button>
+      <button @click="downloadQrImage" type="submit" class="btn btn-custom">Download</button>
     </template>
   </Modal>
 </template>
 <script>
 import Modal from "@/modal/Modal.vue";
-import itemService from "@/services/ItemService";
+import {QrcodeSvg} from "qrcode.vue";
 
 export default {
   name: 'QrCodeModal',
-  components: {Modal},
+  components: {QrcodeSvg, Modal},
   props: {
-    qRCodeModalIsOpen: Boolean,
+    qrCodeModalIsOpen: Boolean,
+    qrCode: String,
+    size: {
+      type: [Number, String],
+      default: 100
+    },
+    level: {
+      type: String,
+      default: "H"
+    },
 
 
   },

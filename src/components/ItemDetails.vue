@@ -1,8 +1,8 @@
 <template>
   <div v-if="isView" class="details-header">
   <h1 class="details-title">View item #{{item.itemName}}</h1>
-    <div v-if="imageQrPath" class="details-qr">
-    <QrImage :value="imageQrPath" />
+    <div v-if="qrCode" class="details-qr">
+    <QrImage :qr-code="qrCode" />
   </div>
   </div>
   <!--ItemDetails-->
@@ -64,7 +64,7 @@ export default {
   props: {
     isView: Boolean,
     item: Object,
-    imageQrPath: String
+    qrCode: String
   },
   methods: {
     onNewImageSelected(base64) {
