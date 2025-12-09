@@ -4,6 +4,10 @@ export default {
         return sessionStorage.getItem('roleName') === 'admin'
     },
 
+    getUserId() {
+        return Number(sessionStorage.getItem('userId'))
+    },
+
     isLoggedIn() {
         return sessionStorage.getItem('roleName') !== null
     },

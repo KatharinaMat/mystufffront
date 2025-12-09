@@ -2,21 +2,16 @@ import axios from "axios";
 
 export default {
 
-    sendPostItemRequest(item) {
-        const userId = Number(sessionStorage.getItem("userId"))
-        const dto = {
-            userId: userId,
-            itemName: item.itemName,
-            itemDate: item.itemDate,
-            model: item.model,
-            comment: item.comment,
-            imageData: item.imageData
-        };
-       return axios.post("/item", dto)
+    sendPostItemRequest(userId, item) {
+        return axios.post('/item', item, {
+            params: {
+                userId: userId
+            }
+        })
     },
 
     sendGetItemsRequest(userId) {
-        return axios.get("/items",{
+        return axios.get('/items', {
             params: {
                 userId: userId
             }
@@ -24,7 +19,7 @@ export default {
     },
 
     sendGetItemRequest(itemId) {
-        return axios.get("/item", {
+        return axios.get('/item', {
             params: {
                 itemId: itemId
             }
