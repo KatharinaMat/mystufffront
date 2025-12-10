@@ -9,7 +9,7 @@
           accept="image/x-png,image/jpeg,image/gif"
       >
       <button class="btn btn-outline-danger" type="button" @click="clearFileInput">
-        <font-awesome-icon icon="fa-solid fa-trash" />
+        <font-awesome-icon icon="fa-solid fa-trash"/>
       </button>
     </div>
   </div>
@@ -29,6 +29,7 @@ export default {
     },
   },
   methods: {
+
     handleImage(event) {
       const selectedImage = event.target.files[0];
       this.emitBase64(selectedImage);

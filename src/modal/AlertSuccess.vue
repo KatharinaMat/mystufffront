@@ -4,7 +4,6 @@
     <button type="button" class="btn-close" @click="closeAlert"></button>
   </div>
 </template>
-
 <script>
 export default {
   name: 'AlertSuccess',

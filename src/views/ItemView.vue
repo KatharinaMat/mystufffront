@@ -1,29 +1,22 @@
 <template>
   <div>
-
     <h1 v-if="isAdd">Add new item</h1>
     <h1 v-if="isEdit">Edit item #{{ item.itemName }}</h1>
-
     <div v-if="errorMessage" class="alert alert-danger m-3">
       {{ errorMessage }}
     </div>
     <div v-if="successMessage" class="alert alert-success m-3">
       {{ successMessage }}
     </div>
-
-    <!-- Simple loading + error handling -->
     <div v-if="loading" class="text-center mt-5">
       <div class="spinner-border" role="status">
         <span class="visually-hidden">Loading...</span>
       </div>
     </div>
-
     <div v-else-if="errorResponse" class="alert alert-danger m-3">
       {{ errorResponse.message || 'An unknown error occurred.' }}
     </div>
-
     <div v-else>
-
       <ItemDetails
           :is-view="isView"
           :item="item"
@@ -33,9 +26,8 @@
           @event-item-model-updated="setItemModel"
           @event-item-comment-updated="setItemComment"
           @event-new-image-selected="setItemImageData"
-          @event-chosen-image-cleared="handleDeleteImage"
           @event-item-updated="processUpdateItem"
-
+          @event-chosen-image-cleared="handleDeleteImage"
       />
       <DeleteItemModal
           :delete-item-modal-is-open="deleteItemModalIsOpen"
@@ -47,19 +39,12 @@
         <button v-if="isView || isAdd" @click="goBack" class="btn btn-custom me-3">Back</button>
         <button v-if="isView" @click="enableEdit" class="btn btn-custom me-3">Edit</button>
         <button v-if="isView" @click="displayDeleteItemModal" class="btn btn-custom me-3">Delete</button>
-
-
         <button v-if="isEdit" @click="disableEdit" class="btn btn-custom me-3">Close edit</button>
         <button v-if="isEdit" @click="processUpdateItem" type="submit" class="btn btn-custom me-3">Save</button>
-
         <button v-if="isAdd" @click="processAddItem" class="btn btn-custom me-3">Add</button>
-
       </div>
     </div>
-
   </div>
-
-
 </template>
 
 <script>
@@ -87,7 +72,6 @@ export default {
       isEdit: false,
       qrCode: '',
       deleteItemModalIsOpen: false,
-
       item: {
         itemName: '',
         itemDate: '',
@@ -96,12 +80,10 @@ export default {
         imageData: '',
         imageId: null
       },
-
       loading: false,
       errorResponse: null
     };
   },
-
   methods: {
     processAddItem() {
       this.resetMessages()
@@ -132,7 +114,6 @@ export default {
     requiredFieldsHaveCorrectInput() {
       return this.errorMessage === '';
     },
-
     loadItem() {
       this.startLoadingSpinner()
       ItemService.sendGetItemRequest(this.itemId)
@@ -148,13 +129,11 @@ export default {
             this.stopLoadingSpinner()
           });
     },
-
     getQrCode() {
       QrCodeService.sendGetQrCodeRequest(this.itemId)
-          .then(response => this.qrCode = response.data )
+          .then(response => this.qrCode = response.data)
           .catch(() => NavigationService.navigateToErrorView())
     },
-
     executeAddItem() {
       ItemService.sendPostItemRequest(this.userId, this.item)
           .then(() => this.handleAddItemResponse())
@@ -168,7 +147,6 @@ export default {
     itemNameAlreadyExists(error) {
       return error.response.status === 403 && this.errorResponse.errorCode === 333;
     },
-
     processUpdateItem() {
       this.resetMessages()
       this.handleInputErrorMessages()
@@ -191,13 +169,11 @@ export default {
     closeDeleteItemModal() {
       this.deleteItemModalIsOpen = false;
     },
-
-    deleteItem(){
+    deleteItem() {
       ItemService.sendDeleteItem(this.itemId)
           .then(() => NavigationService.navigateToItemsView())
           .catch(() => NavigationService.navigateToErrorView())
     },
-
     resetAllFields() {
       this.item.itemName = ''
       this.item.itemDate = ''
@@ -206,15 +182,12 @@ export default {
       this.item.imageData = ''
       this.resetImageInput = true
     },
-
     startLoadingSpinner() {
       this.loading = true
     },
-
     stopLoadingSpinner() {
       this.loading = false
     },
-
     enableEdit() {
       this.isEdit = true
       this.isView = false
@@ -224,32 +197,25 @@ export default {
       this.isView = true
       this.item = JSON.parse(sessionStorage.getItem("item"))
     },
-
     goBack() {
       NavigationService.navigateToItemsView();
     },
-
     setItemItemName(itemName) {
       this.item.itemName = itemName
     },
-
     setItemItemDate(itemDate) {
       this.item.itemDate = itemDate
     },
-
     setItemModel(model) {
       this.item.model = model
     },
-
     setItemComment(comment) {
       this.item.comment = comment
     },
-
     setItemImageData(imageData) {
       this.item.imageData = imageData
       this.item.imageId = null
     },
-
     handleDeleteImage() {
       if (!this.item.imageId) {
         this.handleDeleteTempImage();
@@ -257,30 +223,24 @@ export default {
         this.handleDeleteStoredImage();
       }
     },
-
     handleDeleteTempImage() {
       this.item.imageData = '';
       this.resetImageInput = true;
-
-      alert("Pilt kustutatud");
+      alert("Image deleted");
     },
-
     handleDeleteStoredImage() {
       ItemService.sendDeleteItemImageRequest(this.itemId, this.item.imageId)
           .then(() => {
             this.item.imageData = '';
             this.item.imageId = null;
-
             sessionStorage.setItem('item', JSON.stringify(this.item));
-
-            alert("Pilt kustutatud");
+            alert("Image deleted");
           })
           .catch(() => {
             NavigationService.navigateToErrorView();
           });
     },
   },
-
   mounted() {
     this.isAdd = isNaN(this.itemId)
     this.isView = !this.isAdd
@@ -289,10 +249,8 @@ export default {
     }
     this.loadItem();
     this.getQrCode()
-
     const mode = SessionStorageService.getItemMode();
     SessionStorageService.clearItemMode();
-
     if (mode === 'edit') {
       this.enableEdit();
     } else if (mode === 'delete') {

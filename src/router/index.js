@@ -6,7 +6,6 @@ import ItemsView from "@/views/ItemsView.vue";
 import ErrorView from "@/views/ErrorView.vue";
 import ItemView from "@/views/ItemView.vue";
 
-
 const routes = [
     {
         path: '/',
@@ -24,8 +23,8 @@ const routes = [
         component: NewAccountView
     },
     {
-        path:'/items',
-        name:'itemsRoute',
+        path: '/items',
+        name: 'itemsRoute',
         component: ItemsView
     },
     {
@@ -33,14 +32,11 @@ const routes = [
         name: 'itemRoute',
         component: ItemView
     },
-
-
     {
         path: '/error',
         name: 'errorRoute',
         component: ErrorView
     },
-
 
 ]
 

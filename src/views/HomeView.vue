@@ -7,8 +7,7 @@
       <div class="row">
         <div>
           <LoginCreateAccountMenu/>
-          <img src="@/assets/background_picture.webp" alt="background" class="home-image">
-
+          <img src="../assets/images/background_picture.webp" alt="background" class="home-image">
         </div>
       </div>
     </div>
@@ -20,7 +19,6 @@ h1 {
   margin-top: 60px; /* to push the h1 lower */
   margin-bottom: 40px; /*to push the next block lower*/
 }
-
 </style>
 
 <script>

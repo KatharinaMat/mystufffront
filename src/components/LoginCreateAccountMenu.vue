@@ -8,7 +8,6 @@
     </h3>
   </nav>
 </template>
-
 <script>
 export default {
   name: 'LoginCreateAccountMenu'

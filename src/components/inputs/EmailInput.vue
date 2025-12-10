@@ -5,10 +5,9 @@
            class="form-control"
            :class="{ 'is-invalid': emailError }"
            placeholder="Email"
-           @input = "$emit('event-email-updated', $event.target.value)"
+           @input="$emit('event-email-updated', $event.target.value)"
     >
     <label>Email</label>
-
     <div class="invalid-feedback">
       {{ emailError }}
     </div>

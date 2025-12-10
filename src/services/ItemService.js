@@ -1,5 +1,4 @@
 import axios from "axios";
-import NavigationService from "@/services/NavigationService";
 
 export default {
 
@@ -27,7 +26,7 @@ export default {
         })
     },
     sendPutItemRequest(itemId, item) {
-        return axios.put('/item', item,  {
+        return axios.put('/item', item, {
             params: {
                 itemId: itemId
             }

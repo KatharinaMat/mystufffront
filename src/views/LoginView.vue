@@ -3,13 +3,11 @@
     <div>
       <h1>MyStuffLabelled</h1>
     </div>
-
     <div class="row justify-content-center mb-3">
       <div class="col col-6">
         <AlertDanger :alert-message="alertMessage" @event-alert-box-closed="resetAlertMessage"/>
       </div>
     </div>
-
     <div class="container text-center">
       <div class="row">
         <div>
@@ -37,8 +35,8 @@
       </div>
     </div>
   </div>
-
 </template>
+
 <style scoped>
 h1 {
   margin-top: 30px; /* to push the h1 lower */
@@ -52,7 +50,7 @@ import AlertDanger from "@/modal/AlertDanger.vue";
 import NavigationService from "@/services/NavigationService";
 import SessionStorageService from "@/services/SessionStorageService";
 import LoginCreateAccountMenu from "@/components/LoginCreateAccountMenu.vue";
-import UsernameInput from "@/views/UsernameInput.vue";
+import UsernameInput from "@/components/inputs/UsernameInput.vue";
 
 export default {
   name: 'LoginView',
@@ -78,16 +76,12 @@ export default {
         username: '',
         password: ''
       },
-
-
-
     }
   },
   methods: {
     togglePassword() {
       this.showPassword = !this.showPassword
     },
-
     processLogin() {
       if (this.allFieldsHaveCorrectInput()) {
         this.executeLogin();
@@ -95,35 +89,28 @@ export default {
         this.displayIncorrectInputAlert();
       }
     },
-
     allFieldsHaveCorrectInput() {
       return this.username !== '' && this.password !== '';
     },
-
     executeLogin() {
       LoginService.sendGetLoginRequest(this.username, this.password)
           .then(response => this.handleLoginResponse(response))
           .catch(error => this.handleLoginError(error))
     },
-
     handleLoginResponse(response) {
       this.loginResponse = response.data
       this.setSessionStorageItems();
       this.updateNavMenuUserIsLoggedIn();
       NavigationService.navigateToItemsView();
     },
-
     setSessionStorageItems() {
       sessionStorage.setItem('userId', this.loginResponse.userId)
       sessionStorage.setItem('roleName', this.loginResponse.roleName)
       SessionStorageService.setUsername(this.username)
     },
-
     updateNavMenuUserIsLoggedIn() {
       this.$emit('event-user-logged-in')
     },
-
-
     handleLoginError(error) {
       this.errorResponse = error.response.data
       if (this.incorrectCredentialsInput(error)) {
@@ -132,30 +119,23 @@ export default {
         NavigationService.navigateToErrorView();
       }
     },
-
     incorrectCredentialsInput(error) {
       return error.response.status === 403 && this.errorResponse.errorCode === 111;
     },
-
     displayIncorrectCredentialsAlert() {
       this.alertMessage = this.errorResponse.message
       setTimeout(this.resetAlertMessage, 4000)
     },
-
     displayIncorrectInputAlert() {
       this.alertMessage = 'Please fill out all fields'
       setTimeout(this.resetAlertMessage, 4000)
     },
-
     resetAlertMessage() {
       this.alertMessage = ''
     },
-
     setUsername(username) {
       this.username = username
     },
-
   }
-
 }
 </script>

@@ -14,23 +14,19 @@
         </tr>
         </thead>
         <tbody>
-        <!-- table rows -->
         <tr v-for="item in items" :key="item.itemId">
           <td>
             <a href="#" @click="navigateToItemView(item.itemId)">{{ item.itemName }}</a>
           </td>
           <td>{{ formatDate(item.itemDate) }}</td>
-
           <td>
-            <font-awesome-icon @click="navigateToEditItem(item.itemId)" class="table-icon me-3" icon="pen-to-square" />
+            <font-awesome-icon @click="navigateToEditItem(item.itemId)" class="table-icon me-3" icon="pen-to-square"/>
             <font-awesome-icon @click="navigateToDeleteItemModal(item.itemId)" class="table-icon me-3" icon="trash"/>
             <font-awesome-icon @click="navigateToQrCodeModal(item.itemId)" class="table-icon" icon="qrcode"/>
-
           </td>
         </tr>
         </tbody>
       </table>
-
       <div v-else>
         You have no items yet :)
       </div>
@@ -40,7 +36,6 @@
         :qr-code="qrCode"
         @event-close-modal="closeQrCodeModal"
     />
-
   </div>
 </template>
 
@@ -56,7 +51,6 @@ export default {
   components: {QrCodeModal},
   data() {
     return {
-
       items: [
         {
           itemId: 0,
@@ -85,8 +79,6 @@ export default {
     navigateToQrCodeModal(itemId) {
       this.openQrCodeForItem(itemId);
     },
-
-
     openQrCodeForItem(itemId) {
       QrCodeService.sendGetQrCodeRequest(itemId)
           .then(response => {
@@ -98,12 +90,10 @@ export default {
             // you can show an error message here if you want
           });
     },
-
     closeQrCodeModal() {
       this.qrCodeModalIsOpen = false;
       this.qrCode = '';
     },
-
     loadItems() {
       const userId = sessionStorage.getItem('userId');
       ItemsService.sendGetItemsRequest(userId)
@@ -121,6 +111,5 @@ export default {
   mounted() {
     this.loadItems();
   }
-
 };
 </script>

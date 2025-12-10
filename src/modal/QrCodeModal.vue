@@ -17,7 +17,6 @@
 <script>
 import Modal from "@/modal/Modal.vue";
 import {QrcodeSvg} from "qrcode.vue";
-
 export default {
   name: 'QrCodeModal',
   components: {QrcodeSvg, Modal},
@@ -32,8 +31,6 @@ export default {
       type: String,
       default: "H"
     },
-
-
   },
   methods: {
     printQrImage() {
@@ -42,7 +39,6 @@ export default {
       win.document.write(`
         <html>
           <body style="text-align:center;padding:50px;">
-
             ${svg.outerHTML}
             <script>window.print();</scr` + `ipt>
           </body>
@@ -53,18 +49,14 @@ export default {
     downloadQrImage() {
       const svg = this.$refs.qrContainer.querySelector('svg');
       const svgData = new XMLSerializer().serializeToString(svg);
-      const blob = new Blob([svgData], { type: 'image/svg+xml'});
+      const blob = new Blob([svgData], {type: 'image/svg+xml'});
       const url = URL.createObjectURL(blob);
-
       const link = document.createElement('a');
       link.href = url;
       link.download = 'qr-code.svg';
       link.click();
-
       URL.revokeObjectURL(url);
-
     }
   }
 }
-
 </script>

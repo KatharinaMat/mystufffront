@@ -6,9 +6,7 @@
     <div v-if="qrCode" class="qr-wrapper" @click="handleClick">
       <QrcodeSvg :value="qrCode" :size="size" :level="level"/>
     </div>
-
   </div>
-
 </template>
 
 <script>
@@ -28,7 +26,6 @@ export default {
       type: String,
       default: "H"
     },
-
   },
   data() {
     return {
@@ -41,9 +38,4 @@ export default {
     },
   }
 };
-</script>
-
-<script setup lang="ts">
-</script>
-<script setup lang="ts">
 </script>

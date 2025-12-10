@@ -18,7 +18,7 @@ export default {
         SessionStorageService.setItemMode('edit');
         router.push({
             name: 'itemRoute',
-            query: { itemId: itemId }
+            query: {itemId: itemId}
         });
 
     },
@@ -40,7 +40,7 @@ export default {
         SessionStorageService.setItemMode('delete');
         router.push({
             name: 'itemRoute',
-            query: { itemId }
+            query: {itemId}
         });
     },
 

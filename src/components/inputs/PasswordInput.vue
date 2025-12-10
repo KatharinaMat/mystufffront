@@ -12,7 +12,6 @@
         class="password-toggle-icon"
         @click="togglePassword"
     />
-
     <div class="invalid-feedback">
       {{ passwordError }}
     </div>
@@ -37,7 +36,6 @@ export default {
     togglePassword() {
       this.showPassword = !this.showPassword
     },
-
   }
 }
 </script>
