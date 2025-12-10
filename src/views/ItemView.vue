@@ -93,7 +93,8 @@ export default {
         itemDate: '',
         model: '',
         comment: '',
-        imageData: ''
+        imageData: '',
+        imageId: null
       },
 
       loading: false,
@@ -246,14 +247,38 @@ export default {
 
     setItemImageData(imageData) {
       this.item.imageData = imageData
+      this.item.imageId = null
     },
 
     handleDeleteImage() {
-      alert("Pilt kustutatud")
-      // todo: delete image (sõnumiga -> this.itemId)
-      // todo: reset this.image.imageData
+      if (!this.item.imageId) {
+        this.handleDeleteTempImage();
+      } else {
+        this.handleDeleteStoredImage();
+      }
     },
 
+    handleDeleteTempImage() {
+      this.item.imageData = '';
+      this.resetImageInput = true;
+
+      alert("Pilt kustutatud");
+    },
+
+    handleDeleteStoredImage() {
+      ItemService.sendDeleteItemImageRequest(this.itemId, this.item.imageId)
+          .then(() => {
+            this.item.imageData = '';
+            this.item.imageId = null;
+
+            sessionStorage.setItem('item', JSON.stringify(this.item));
+
+            alert("Pilt kustutatud");
+          })
+          .catch(() => {
+            NavigationService.navigateToErrorView();
+          });
+    },
   },
 
   mounted() {

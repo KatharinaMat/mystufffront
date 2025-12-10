@@ -1,4 +1,5 @@
 import axios from "axios";
+import NavigationService from "@/services/NavigationService";
 
 export default {
 
@@ -40,4 +41,9 @@ export default {
             }
         })
     },
+
+    sendDeleteItemImageRequest(itemId, imageId) {
+        return axios.delete(`/${itemId}/images/${imageId}`);
+    },
+
 }
