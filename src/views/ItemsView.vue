@@ -87,7 +87,6 @@ export default {
           })
           .catch(err => {
             console.error("Failed to load QR code:", err);
-            // you can show an error message here if you want
           });
     },
     closeQrCodeModal() {
