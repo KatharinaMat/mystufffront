@@ -64,14 +64,17 @@ export default {
     return {
       itemId: Number(useRoute().query.itemId),
       userId: SessionStorageService.getUserId(),
+
       errorMessage: '',
       successMessage: '',
+
       resetImageInput: false,
       isView: false,
       isAdd: false,
       isEdit: false,
       qrCode: '',
       deleteItemModalIsOpen: false,
+
       item: {
         itemName: '',
         itemDate: '',
@@ -80,11 +83,36 @@ export default {
         imageData: '',
         imageId: null
       },
+
       loading: false,
       errorResponse: null
     };
   },
+
   methods: {
+    // --------- LOAD / INIT ---------
+    loadItem() {
+      this.startLoadingSpinner()
+      ItemService.sendGetItemRequest(this.itemId)
+          .then(response => {
+            this.item = response.data
+            sessionStorage.setItem('item', JSON.stringify(this.item))
+          })
+          .catch(error => {
+            this.errorResponse = error.response?.data || {message: 'Failed to load item data.'};
+          })
+          .finally(() => {
+            this.stopLoadingSpinner()
+          });
+    },
+
+    getQrCode() {
+      QrCodeService.sendGetQrCodeRequest(this.itemId)
+          .then(response => this.qrCode = response.data)
+          .catch(() => NavigationService.navigateToErrorView())
+    },
+
+    // --------- ADD ITEM ---------
     processAddItem() {
       this.resetMessages()
       this.handleInputErrorMessages();
@@ -92,6 +120,7 @@ export default {
         this.executeAddItem();
       }
     },
+
     handleInputErrorMessages() {
       if (this.item.itemName === '') {
         this.errorMessage = 'Please enter item Name'
@@ -107,46 +136,33 @@ export default {
         }
       }
     },
+
     resetMessages() {
       this.errorMessage = ''
       this.successMessage = ''
     },
+
     requiredFieldsHaveCorrectInput() {
       return this.errorMessage === '';
     },
-    loadItem() {
-      this.startLoadingSpinner()
-      ItemService.sendGetItemRequest(this.itemId)
-          .then(response => {
-            this.item = response.data
-            sessionStorage.setItem('item', JSON.stringify(this.item))
-          })
-          .catch(error => {
-            this.errorResponse = error.response?.data || {message: 'Failed to load item data.'};
 
-          })
-          .finally(() => {
-            this.stopLoadingSpinner()
-          });
-    },
-    getQrCode() {
-      QrCodeService.sendGetQrCodeRequest(this.itemId)
-          .then(response => this.qrCode = response.data)
-          .catch(() => NavigationService.navigateToErrorView())
-    },
     executeAddItem() {
       ItemService.sendPostItemRequest(this.userId, this.item)
           .then(() => this.handleAddItemResponse())
           .catch(error => this.itemNameAlreadyExists(error))
     },
+
     handleAddItemResponse() {
       this.successMessage = 'New item "' + this.item.itemName + '" has been added!'
       setTimeout(this.resetMessages, 4000)
       this.resetAllFields()
     },
+
     itemNameAlreadyExists(error) {
       return error.response.status === 403 && this.errorResponse.errorCode === 333;
     },
+
+    // --------- UPDATE ITEM ---------
     processUpdateItem() {
       this.resetMessages()
       this.handleInputErrorMessages()
@@ -154,68 +170,39 @@ export default {
         this.executeUpdateItem();
       }
     },
+
     executeUpdateItem() {
       ItemService.sendPutItemRequest(this.itemId, this.item)
           .then(() => this.handleUpdateItemResponse())
           .catch(() => NavigationService.navigateToErrorView())
     },
+
     handleUpdateItemResponse() {
       sessionStorage.setItem('successMessage', 'Item "' + this.item.itemName + '" updated succesfully')
       NavigationService.navigateToItemsView()
     },
+
+    // --------- DELETE ITEM ---------
     displayDeleteItemModal() {
       this.deleteItemModalIsOpen = true;
     },
+
     closeDeleteItemModal() {
       this.deleteItemModalIsOpen = false;
     },
+
     deleteItem() {
       ItemService.sendDeleteItem(this.itemId)
           .then(() => NavigationService.navigateToItemsView())
           .catch(() => NavigationService.navigateToErrorView())
     },
-    resetAllFields() {
-      this.item.itemName = ''
-      this.item.itemDate = ''
-      this.item.model = ''
-      this.item.comment = ''
-      this.item.imageData = ''
-      this.resetImageInput = true
-    },
-    startLoadingSpinner() {
-      this.loading = true
-    },
-    stopLoadingSpinner() {
-      this.loading = false
-    },
-    enableEdit() {
-      this.isEdit = true
-      this.isView = false
-    },
-    disableEdit() {
-      this.isEdit = false
-      this.isView = true
-      this.item = JSON.parse(sessionStorage.getItem("item"))
-    },
-    goBack() {
-      NavigationService.navigateToItemsView();
-    },
-    setItemItemName(itemName) {
-      this.item.itemName = itemName
-    },
-    setItemItemDate(itemDate) {
-      this.item.itemDate = itemDate
-    },
-    setItemModel(model) {
-      this.item.model = model
-    },
-    setItemComment(comment) {
-      this.item.comment = comment
-    },
+
+    // --------- IMAGE HANDLING ---------
     setItemImageData(imageData) {
       this.item.imageData = imageData
       this.item.imageId = null
     },
+
     handleDeleteImage() {
       if (!this.item.imageId) {
         this.handleDeleteTempImage();
@@ -223,11 +210,13 @@ export default {
         this.handleDeleteStoredImage();
       }
     },
+
     handleDeleteTempImage() {
       this.item.imageData = '';
       this.resetImageInput = true;
       alert("Image deleted");
     },
+
     handleDeleteStoredImage() {
       ItemService.sendDeleteItemImageRequest(this.itemId, this.item.imageId)
           .then(() => {
@@ -240,7 +229,58 @@ export default {
             NavigationService.navigateToErrorView();
           });
     },
+
+    // --------- FIELD SETTERS ---------
+    setItemItemName(itemName) {
+      this.item.itemName = itemName
+    },
+
+    setItemItemDate(itemDate) {
+      this.item.itemDate = itemDate
+    },
+
+    setItemModel(model) {
+      this.item.model = model
+    },
+
+    setItemComment(comment) {
+      this.item.comment = comment
+    },
+
+    // --------- UTILS / VIEW STATE ---------
+    resetAllFields() {
+      this.item.itemName = ''
+      this.item.itemDate = ''
+      this.item.model = ''
+      this.item.comment = ''
+      this.item.imageData = ''
+      this.resetImageInput = true
+    },
+
+    startLoadingSpinner() {
+      this.loading = true
+    },
+
+    stopLoadingSpinner() {
+      this.loading = false
+    },
+
+    enableEdit() {
+      this.isEdit = true
+      this.isView = false
+    },
+
+    disableEdit() {
+      this.isEdit = false
+      this.isView = true
+      this.item = JSON.parse(sessionStorage.getItem("item"))
+    },
+
+    goBack() {
+      NavigationService.navigateToItemsView();
+    },
   },
+
   mounted() {
     this.isAdd = isNaN(this.itemId)
     this.isView = !this.isAdd
@@ -257,6 +297,6 @@ export default {
       this.displayDeleteItemModal();
     }
   }
-};
-</script>
+}
 
+</script>
