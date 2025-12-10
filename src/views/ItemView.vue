@@ -43,7 +43,6 @@
           @event-confirm-delete="deleteItem"
       />
 
-
       <div class="mt-3">
         <button v-if="isView || isAdd" @click="goBack" class="btn btn-custom me-3">Back</button>
         <button v-if="isView" @click="enableEdit" class="btn btn-custom me-3">Edit</button>
@@ -70,13 +69,11 @@ import ItemDetails from "@/components/ItemDetails.vue";
 import NavigationService from "@/services/NavigationService";
 import SessionStorageService from "@/services/SessionStorageService";
 import QrCodeService from "@/services/QrCodeService";
-import QrCodeModal from "@/modal/QrCodeModal.vue";
 import DeleteItemModal from "@/modal/DeleteItemModal.vue";
-
 
 export default {
   name: "ItemView",
-  components: {ItemDetails, QrCodeModal, DeleteItemModal},
+  components: {ItemDetails, DeleteItemModal},
 
   data() {
     return {
@@ -90,7 +87,6 @@ export default {
       isEdit: false,
       qrCode: '',
       deleteItemModalIsOpen: false,
-      selectedItemId: 0,
 
       item: {
         itemName: '',
@@ -141,12 +137,11 @@ export default {
       ItemService.sendGetItemRequest(this.itemId)
           .then(response => {
             this.item = response.data
-            this.loading = false;
             sessionStorage.setItem('item', JSON.stringify(this.item))
           })
           .catch(error => {
             this.errorResponse = error.response?.data || {message: 'Failed to load item data.'};
-            console.error("Error loading item:", error);
+
           })
           .finally(() => {
             this.stopLoadingSpinner()
@@ -198,16 +193,8 @@ export default {
 
     deleteItem(){
       ItemService.sendDeleteItem(this.itemId)
-          .then(response => this.handleDisplayDeleteItemModalResponse(response))
+          .then(() => NavigationService.navigateToItemsView())
           .catch(() => NavigationService.navigateToErrorView())
-    },
-    handleDisplayDeleteItemModalResponse(response) {
-      this.item = response.data
-      this.openDeleteItemModal()
-      NavigationService.navigateToItemsView()
-    },
-    openDeleteItemModal() {
-      this.deleteItemModalIsOpen = true
     },
 
     resetAllFields() {
@@ -272,12 +259,20 @@ export default {
   mounted() {
     this.isAdd = isNaN(this.itemId)
     this.isView = !this.isAdd
-
-    if (this.isView) {
-      this.loadItem();
-      this.getQrCode()
+    if (this.isAdd) {
+      return;
     }
+    this.loadItem();
+    this.getQrCode()
 
+    const mode = SessionStorageService.getItemMode();
+    SessionStorageService.clearItemMode();
+
+    if (mode === 'edit') {
+      this.enableEdit();
+    } else if (mode === 'delete') {
+      this.displayDeleteItemModal();
+    }
   }
 };
 </script>

@@ -42,7 +42,7 @@ export default {
       win.document.write(`
         <html>
           <body style="text-align:center;padding:50px;">
-            <h2>QR Code</h2>
+
             ${svg.outerHTML}
             <script>window.print();</scr` + `ipt>
           </body>

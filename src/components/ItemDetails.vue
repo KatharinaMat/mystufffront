@@ -17,7 +17,7 @@
       </div>
       <!-- Date -->
       <div class="detail-row">
-        <span class="detail-label">Date</span>
+        <span class="detail-label">Date of Purchase</span>
         <input :value="item.itemDate" type="date" class="form-control detail-input" :readonly="isView"
                @input="$emit('event-item-date-updated', $event.target.value)"
         />

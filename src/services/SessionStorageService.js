@@ -1,3 +1,4 @@
+const ITEM_MODE_KEY = 'itemMode';
 export default {
 
     isAdmin() {
@@ -17,5 +18,16 @@ export default {
 
     getUsername() {
         return sessionStorage.getItem('username')
+    },
+    setItemMode(mode) {
+        sessionStorage.setItem(ITEM_MODE_KEY, mode);
+    },
+
+    getItemMode() {
+        return sessionStorage.getItem(ITEM_MODE_KEY);
+    },
+
+    clearItemMode() {
+        sessionStorage.removeItem(ITEM_MODE_KEY);
     }
 }

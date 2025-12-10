@@ -1,4 +1,5 @@
 import router from "@/router";
+import SessionStorageService from "@/services/SessionStorageService";
 
 export default {
     navigateToLoginView() {
@@ -13,19 +14,34 @@ export default {
     navigateToHomeView() {
         router.push({name: 'homeRoute'})
     },
-    navigateToEditItem() {
+    navigateToEditItem(itemId) {
+        SessionStorageService.setItemMode('edit');
+        router.push({
+            name: 'itemRoute',
+            query: { itemId: itemId }
+        });
 
     },
     navigateToAddItem() {
+        SessionStorageService.clearItemMode();
         router.push({name: 'itemRoute'});
     },
 
     navigateToItemView(itemId) {
+        SessionStorageService.clearItemMode();
         router.push({
             name: 'itemRoute',
             query: {
                 itemId: itemId
             }
         })
-    }
+    },
+    navigateToDeleteItemModal(itemId) {
+        SessionStorageService.setItemMode('delete');
+        router.push({
+            name: 'itemRoute',
+            query: { itemId }
+        });
+    },
+
 }

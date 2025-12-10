@@ -35,6 +35,12 @@
         You have no items yet :)
       </div>
     </div>
+    <QrCodeModal
+        :qr-code-modal-is-open="qrCodeModalIsOpen"
+        :qr-code="qrCode"
+        @event-close-modal="closeQrCodeModal"
+    />
+
   </div>
 </template>
 
@@ -42,11 +48,12 @@
 import SessionStorageService from "@/services/SessionStorageService";
 import ItemsService from "@/services/ItemService";
 import NavigationService from "@/services/NavigationService";
+import QrCodeService from "@/services/QrCodeService";
+import QrCodeModal from "@/modal/QrCodeModal.vue";
 
 export default {
   name: "ItemsView",
-  components: {
-  },
+  components: {QrCodeModal},
   data() {
     return {
 
@@ -57,7 +64,9 @@ export default {
           itemDate: ''
         }
       ],
-      isLoggedIn: false
+      isLoggedIn: false,
+      qrCodeModalIsOpen: false,
+      qrCode: '',
     }
   },
   methods: {
@@ -73,9 +82,28 @@ export default {
     navigateToDeleteItemModal(itemId) {
       NavigationService.navigateToDeleteItemModal(itemId)
     },
-    navigateToQrCodeModal() {
-      NavigationService.navigateToQrCodeModal()
+    navigateToQrCodeModal(itemId) {
+      this.openQrCodeForItem(itemId);
     },
+
+
+    openQrCodeForItem(itemId) {
+      QrCodeService.sendGetQrCodeRequest(itemId)
+          .then(response => {
+            this.qrCode = response.data;
+            this.qrCodeModalIsOpen = true;
+          })
+          .catch(err => {
+            console.error("Failed to load QR code:", err);
+            // you can show an error message here if you want
+          });
+    },
+
+    closeQrCodeModal() {
+      this.qrCodeModalIsOpen = false;
+      this.qrCode = '';
+    },
+
     loadItems() {
       const userId = sessionStorage.getItem('userId');
       ItemsService.sendGetItemsRequest(userId)
