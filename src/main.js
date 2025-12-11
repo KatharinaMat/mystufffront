@@ -1,7 +1,6 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
-
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 
@@ -20,6 +19,10 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { faEye, faEyeSlash, faR } from '@fortawesome/free-regular-svg-icons'
 
+const API_BASE_URL =
+    process.env.VUE_APP_API_BASE_URL || 'https://mystuff-backend.onrender.com'
+
+axios.defaults.baseURL = API_BASE_URL
 console.log('AXIOS BASE URL =', axios.defaults.baseURL)
 
 library.add(
