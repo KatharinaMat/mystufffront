@@ -1,9 +1,13 @@
 import axios from "axios";
 
+const API_BASE_URL =
+    process.env.VUE_APP_API_BASE_URL || "https://mystuff-backend.onrender.com";
+
 const apiClient = axios.create({
-    baseURL: "https://mystuff-backend.onrender.com",  // your Render backend
-    // optional:
-    // withCredentials: false,
+    baseURL: API_BASE_URL,
+    headers: {
+        "Content-Type": "application/json",
+    },
 });
 
 export default apiClient;
