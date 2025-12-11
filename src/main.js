@@ -1,13 +1,14 @@
-import axios from "axios";
-axios.defaults.baseURL = "https://mystuff-backend.onrender.com";
-
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
+
+import axios from 'axios'
 import VueAxios from 'vue-axios'
+
+import '@/assets/css/style.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.js'
-import '@assets/css/style.css'
+
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {
@@ -19,15 +20,18 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { faEye, faEyeSlash, faR } from '@fortawesome/free-regular-svg-icons'
 
+axios.defaults.baseURL = 'https://mystuff-backend.onrender.com'
+console.log('AXIOS BASE URL =', axios.defaults.baseURL)
+
 library.add(
     faArrowRightFromBracket,
     faUserSecret,
-    faR,
     faPenToSquare,
     faTrash,
     faQrcode,
     faEye,
-    faEyeSlash
+    faEyeSlash,
+    faR
 )
 
 const app = createApp(App)
