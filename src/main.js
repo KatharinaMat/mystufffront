@@ -20,7 +20,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { faEye, faEyeSlash, faR } from '@fortawesome/free-regular-svg-icons'
 
-axios.defaults.baseURL = 'https://mystuff-backend.onrender.com'
 console.log('AXIOS BASE URL =', axios.defaults.baseURL)
 
 library.add(

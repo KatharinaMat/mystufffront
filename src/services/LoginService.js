@@ -1,15 +1,28 @@
-import axios from "axios";
+// import axios from "axios";
+//
+// export default {
+//
+//     sendGetLoginRequest(username, password) {
+//         return axios.get("/login", {
+//             params: {
+//                 username: username,
+//                 password: password
+//             }
+//         })
+//     },
+//
+//
+// }
+
+import apiClient from "../apiClient";
 
 export default {
-
     sendGetLoginRequest(username, password) {
-        return axios.get("/login", {
+        return apiClient.get("/login", {
             params: {
-                username: username,
-                password: password
+                username,
+                password
             }
-        })
+        });
     },
-
-
-}
+};
