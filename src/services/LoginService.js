@@ -14,15 +14,15 @@
 //
 // }
 
-import apiClient from "../apiClient";
+import apiClient from "./apiClient";
 
 export default {
     sendGetLoginRequest(username, password) {
         return apiClient.get("/login", {
             params: {
                 username,
-                password
-            }
+                password,
+            },
         });
     },
 };

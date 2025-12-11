@@ -47,42 +47,50 @@
 //
 // }
 
-import apiClient from "../apiClient";
+import apiClient from "./apiClient";
 
 export default {
-
     sendPostItemRequest(userId, item) {
         return apiClient.post("/item", item, {
-            params: { userId },
+            params: {
+                userId,
+            },
         });
     },
 
     sendGetItemsRequest(userId) {
         return apiClient.get("/items", {
-            params: { userId },
+            params: {
+                userId,
+            },
         });
     },
 
     sendGetItemRequest(itemId) {
         return apiClient.get("/item", {
-            params: { itemId },
+            params: {
+                itemId,
+            },
         });
     },
 
     sendPutItemRequest(itemId, item) {
         return apiClient.put("/item", item, {
-            params: { itemId },
+            params: {
+                itemId,
+            },
         });
     },
 
     sendDeleteItem(itemId) {
         return apiClient.delete("/item", {
-            params: { itemId },
+            params: {
+                itemId,
+            },
         });
     },
 
     sendDeleteItemImageRequest(itemId, imageId) {
         return apiClient.delete(`/${itemId}/images/${imageId}`);
     },
-
 };
