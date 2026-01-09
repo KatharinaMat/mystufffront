@@ -91,8 +91,8 @@ export default {
 
     handleAddNewUserResponse(trimmedUsername) {
       this.hideAddUserForm()
-      this.alertSuccessMessage = 'New user "${trimmedUsername}" added! You can now login'
-      setTimeout(NavigationService.navigateToLoginView, 4000)
+      this.alertSuccessMessage = 'New user "' + trimmedUsername + '" added! You can now login'
+      setTimeout(NavigationService.navigateToLoginView, 8000)
     },
 
     hideAddUserForm() {
