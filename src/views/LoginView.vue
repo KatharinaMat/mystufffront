@@ -52,7 +52,8 @@ import SessionStorageService from "@/services/SessionStorageService";
 import LoginCreateAccountMenu from "@/components/LoginCreateAccountMenu.vue";
 import UsernameInput from "@/components/inputs/UsernameInput.vue";
 import PasswordInput from "@/components/inputs/PasswordInput.vue";
-
+import UsernameService from "@/services/UsernameService";
+import PasswordService from "@/services/PasswordService";
 
 export default {
   name: 'LoginView',
@@ -77,64 +78,64 @@ export default {
     }
   },
   methods: {
-
+    setUsername(username) {
+      this.username = username
+    },
     setPassword(password) {
       this.password = password
     },
-
     processLogin() {
-      if (this.allFieldsHaveCorrectInput()) {
-        this.executeLogin();
-      } else {
-        this.displayIncorrectInputAlert();
-      }
+      this.resetValidationErrors()
+      this.usernameError = UsernameService.validateLoginUsername(this.username)
+      this.passwordError = PasswordService.validateLoginPassword(this.password)
+
+      if (this.usernameError || this.passwordError) return
+      this.executeLogin()
     },
-    allFieldsHaveCorrectInput() {
-      return this.username !== '' && this.password !== '';
+    resetValidationErrors() {
+      this.usernameError = ''
+      this.passwordError = ''
     },
     executeLogin() {
-      LoginService.login(this.username, this.password)
-          .then(response => this.handleLoginResponse(response))
+      const trimmedUsername = this.username.trim()
+      LoginService.login(trimmedUsername, this.password)
+          .then(response => this.handleLoginResponse(response, trimmedUsername))
           .catch(error => this.handleLoginError(error))
     },
-    handleLoginResponse(response) {
+    handleLoginResponse(response, trimmedUsername) {
       this.loginResponse = response.data
-      this.setSessionStorageItems();
+      this.setSessionStorageItems(trimmedUsername);
       this.updateNavMenuUserIsLoggedIn();
       NavigationService.navigateToItemsView();
     },
-    setSessionStorageItems() {
+    setSessionStorageItems(trimmedUsername) {
       sessionStorage.setItem('userId', this.loginResponse.userId)
       sessionStorage.setItem('roleName', this.loginResponse.roleName)
-      SessionStorageService.setUsername(this.username)
+      SessionStorageService.setUsername(trimmedUsername)
     },
     updateNavMenuUserIsLoggedIn() {
       this.$emit('event-user-logged-in')
     },
     handleLoginError(error) {
-      this.errorResponse = error.response.data
-      if (this.incorrectCredentialsInput(error)) {
-        this.displayIncorrectCredentialsAlert();
-      } else {
-        NavigationService.navigateToErrorView();
+      const status = error?.response?.status
+      this.errorResponse = error?.response?.data || { message: 'Unknown error', errorCode: 0 }
+      if ( status === 403 && this.errorResponse.errorCode === 111) {
+        this.password = ''
+        this.showAlert(this.errorResponse.message)
+        return
       }
+      if (status === 400) {
+        this.showAlert(this.errorResponse.message || 'Please check your input')
+        return
+      }
+      NavigationService.navigateToErrorView()
     },
-    incorrectCredentialsInput(error) {
-      return error.response.status === 403 && this.errorResponse.errorCode === 111;
-    },
-    displayIncorrectCredentialsAlert() {
-      this.alertMessage = this.errorResponse.message
-      setTimeout(this.resetAlertMessage, 4000)
-    },
-    displayIncorrectInputAlert() {
-      this.alertMessage = 'Please fill out all fields'
+    showAlert(message) {
+      this.alertMessage = message
       setTimeout(this.resetAlertMessage, 4000)
     },
     resetAlertMessage() {
       this.alertMessage = ''
-    },
-    setUsername(username) {
-      this.username = username
     },
   }
 }
