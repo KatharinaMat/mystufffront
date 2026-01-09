@@ -42,10 +42,11 @@ import UserService from "@/services/UserService";
 import NavigationService from "@/services/NavigationService";
 import UsernameInput from "@/components/inputs/UsernameInput.vue";
 import PasswordInput from "@/components/inputs/PasswordInput.vue";
-import PasswordService from "@/services/PasswordService";
-import UsernameService from "@/services/UsernameService";
-import EmailService from "@/services/EmailService";
 import EmailInput from "@/components/inputs/EmailInput.vue";
+import UsernameService from "@/services/UsernameService";
+import PasswordService from "@/services/PasswordService";
+import EmailService from "@/services/EmailService";
+
 
 export default {
   name: 'NewAccountView',
@@ -54,7 +55,7 @@ export default {
     return {
       alertSuccessMessage: '',
       displayAddUserForm: true,
-      showPassword: false,
+
       usernameError: '',
       passwordError: '',
       emailError: '',
@@ -72,38 +73,63 @@ export default {
     }
   },
   methods: {
+
     addNewUser() {
       this.resetValidationErrors()
       this.validateFromInput()
-      if (this.formInputIsCorrect()) {
-        UserService.sendPostUserRequest(this.user)
-            .then(() => this.handleAddNewUserResponse())
-            .catch(error => this.handleAddNewUserError(error));
+      if (!this.formInputIsCorrect()) return
+
+      const payload = {
+        username: this.user.username.trim(),
+        password: this.user.password,
+        email: this.user.email.trim()
       }
+        UserService.sendPostUserRequest(payload)
+            .then(() => this.handleAddNewUserResponse(payload.username))
+            .catch(error => this.handleAddNewUserError(error))
     },
-    handleAddNewUserResponse() {
+
+    handleAddNewUserResponse(trimmedUsername) {
       this.hideAddUserForm()
-      this.alertSuccessMessage = 'New user "' + this.user.username + '"  added! You can now login'
+      this.alertSuccessMessage = 'New user "${trimmedUsername}" added! You can now login'
       setTimeout(NavigationService.navigateToLoginView, 4000)
     },
+
     hideAddUserForm() {
       this.displayAddUserForm = false
     },
+
+    validateFromInput() {
+      this.usernameError = UsernameService.validateSignupUsername(this.user.username)
+      this.passwordError = PasswordService.validateSignupPassword(this.user.password)
+      this.emailError = EmailService.validateSignupEmail(this.user.email)
+      },
+
     formInputIsCorrect() {
       return this.usernameError === '' && this.passwordError === '' && this.emailError === ''
     },
-    validateFromInput() {
-      this.usernameError = UsernameService.handleUsernameValidationError(this.user.username)
-      this.passwordError = PasswordService.handlePasswordValidationError(this.user.password)
-      this.emailError = EmailService.handleEmailValidationError(this.user.email)
-      },
+
     handleAddNewUserError(error) {
-      this.errorResponse = error.response.data
-      if (error.response.status === 403 && this.errorResponse.errorCode === 222) {
+      const status = error?.response?.status
+      this.errorResponse = error?.response?.data || { message: 'Unknown error', errorCode: 0 }
+
+      if (status === 403 && this.errorResponse.errorCode === 222) {
         this.usernameError = this.errorResponse.message
-      } else {
-        NavigationService.navigateToErrorView()
+        return
       }
+      if (status === 403 && this.errorResponse.errorCode === 223) {
+        this.emailError = this.errorResponse.message
+        return
+      }
+      if (status === 400) {
+        const msg = this.errorResponse.message || 'Please check your input'
+        if (msg.toLowerCase().includes('username')) this.usernameError = msg
+        else if (msg.toLowerCase().includes('password')) this.passwordError = msg
+        else if (msg.toLowerCase().includes('email')) this.emailError = msg
+        else this.emailError = msg
+        return
+      }
+      NavigationService.navigateToErrorView()
     },
     resetValidationErrors() {
       this.usernameError = ''
@@ -119,8 +145,6 @@ export default {
     setUserEmail(email) {
       this.user.email = email
     }
-  },
-  mounted() {
   }
 }
 </script>
