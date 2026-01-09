@@ -1,6 +1,6 @@
 <template>
   <div class="form-floating mb-3">
-    <input @value="password" :type="showPassword ? 'text' : 'password'"
+    <input :value="password" :type="showPassword ? 'text' : 'password'"
            class="form-control"
            :class="{ 'is-invalid': passwordError }"
            placeholder="Password"

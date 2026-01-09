@@ -18,16 +18,16 @@
     <div class="container text-center">
       <div class="row justify-content-center">
         <div class="col-10 col-md-6 col-lg-4">
-          <UsernameInput :username="username" @event-username-updated="setUsername"/>
-          <div class="form-floating mb-3">
-            <input v-model="password" :type="showPassword ? 'text' : 'password'" class="form-control" placeholder="Password">
-            <label>Password</label>
-            <font-awesome-icon
-                :icon="showPassword ? 'fa-regular fa-eye-slash' : 'fa-regular fa-eye'"
-                class="password-toggle-icon"
-                @click="togglePassword"
+          <UsernameInput
+              :username="username"
+              :username-error="usernameError"
+              @event-username-updated="setUsername"/>
+
+            <PasswordInput
+                :password="password"
+                :password-error="passwordError"
+                @event-password-updated="setPassword"
             />
-          </div>
           <div class="form-floating">
             <button @click="processLogin" type="button" class="btn btn-custom btn-large">Go!</button>
           </div>
@@ -51,16 +51,19 @@ import NavigationService from "@/services/NavigationService";
 import SessionStorageService from "@/services/SessionStorageService";
 import LoginCreateAccountMenu from "@/components/LoginCreateAccountMenu.vue";
 import UsernameInput from "@/components/inputs/UsernameInput.vue";
+import PasswordInput from "@/components/inputs/PasswordInput.vue";
+
 
 export default {
   name: 'LoginView',
-  components: {UsernameInput, LoginCreateAccountMenu, AlertDanger},
+  components: {PasswordInput, UsernameInput, LoginCreateAccountMenu, AlertDanger},
   data() {
     return {
       username: '',
       password: '',
-      showPassword: false,
       alertMessage: '',
+      usernameError: '',
+      passwordError: '',
 
       loginResponse: {
         userId: 0,
@@ -71,17 +74,14 @@ export default {
         message: '',
         errorCode: 0
       },
-
-      validationError: {
-        username: '',
-        password: ''
-      },
     }
   },
   methods: {
-    togglePassword() {
-      this.showPassword = !this.showPassword
+
+    setPassword(password) {
+      this.password = password
     },
+
     processLogin() {
       if (this.allFieldsHaveCorrectInput()) {
         this.executeLogin();
@@ -93,7 +93,7 @@ export default {
       return this.username !== '' && this.password !== '';
     },
     executeLogin() {
-      LoginService.sendGetLoginRequest(this.username, this.password)
+      LoginService.login(this.username, this.password)
           .then(response => this.handleLoginResponse(response))
           .catch(error => this.handleLoginError(error))
     },
