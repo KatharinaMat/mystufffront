@@ -31,7 +31,8 @@
         </div>
 
         <div class="form-floating">
-          <button @click="addNewUser" type="button" class="btn btn-custom btn-large">Sign up!</button>
+          <button @click="addNewUser" type="button" class="btn btn-custom btn-large"
+                  :disabled="!captchaToken">Sign up!</button>
         </div>
       </div>
     </div>
@@ -73,6 +74,9 @@ export default {
       alertSuccessMessage: '',
       displayAddUserForm: true,
 
+      captchaToken: '',
+      captchaError: '',
+
       usernameError: '',
       passwordError: '',
       emailError: '',
@@ -101,9 +105,15 @@ export default {
         username: this.user.username.trim(),
         password: this.user.password,
         email: this.user.email.trim(),
-        website: this.user.website // honeypot
+        website: this.user.website, // honeypot
+        captchaToken: this.captchaToken
       }
-        UserService.sendPostUserRequest(payload)
+      this.captchaError = ''
+      if (!this.captchaToken) {
+        this.captchaError = 'Please complete the captcha.'
+        return
+      }
+      UserService.sendPostUserRequest(payload)
             .then(() => this.handleAddNewUserResponse(payload.username))
             .catch(error => this.handleAddNewUserError(error))
     },
@@ -163,7 +173,68 @@ export default {
     },
     setUserEmail(email) {
       this.user.email = email
-    }
-  }
+    },
+    loadHcaptchaScriptIfNeeded() {
+      return new Promise((resolve, reject) => {
+        if (window.hcaptcha) return resolve()
+
+        const existing = document.querySelector('script[data-hcaptcha="true"]')
+        if (existing) {
+          existing.addEventListener('load', resolve)
+          existing.addEventListener('error', reject)
+          return
+        }
+
+        const script = document.createElement('script')
+        script.src = 'https://js.hcaptcha.com/1/api.js?render=explicit'
+        script.async = true
+        script.defer = true
+        script.setAttribute('data-hcaptcha', 'true')
+        script.onload = resolve
+        script.onerror = reject
+        document.head.appendChild(script)
+      })
+    },
+
+    renderHcaptcha() {
+      this.captchaToken = ''
+      this.captchaError = ''
+
+      const el = this.$refs.hcaptchaEl
+      if (!el) return
+      el.innerHTML = ''
+
+      const SITE_KEY = process.env.VUE_APP_HCAPTCHA_SITE_KEY
+      if (!SITE_KEY) {
+        this.captchaError = 'Captcha site key is missing. Check .env.local'
+        return
+      }
+
+      window.hcaptcha.render(el, {
+        sitekey: SITE_KEY,
+        callback: (token) => {
+          this.captchaToken = token
+          this.captchaError = ''
+        },
+        'expired-callback': () => {
+          this.captchaToken = ''
+          this.captchaError = 'Captcha expired. Please try again.'
+        },
+        'error-callback': () => {
+          this.captchaToken = ''
+          this.captchaError = 'Captcha failed to load. Please refresh.'
+        }
+      })
+    },
+
+  },
+  mounted() {
+    this.loadHcaptchaScriptIfNeeded()
+        .then(() => this.renderHcaptcha())
+        .catch(() => {
+          this.captchaError = 'Captcha failed to load. Please refresh.'
+        })
+  },
+
 }
 </script>
