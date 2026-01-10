@@ -29,11 +29,28 @@
                 @event-password-updated="setPassword"
             />
           <div class="form-floating">
-            <button @click="processLogin" type="button" class="btn btn-custom btn-large">Go!</button>
+            <button @click="processLogin"
+                    type="button"
+                    class="btn btn-custom btn-large"
+                    :disabled="cooldownRemaining > 0"
+            >
+              <span v-if="cooldownRemaining === 0">Go!</span>
+              <span v-else>Try again in {{ cooldownRemaining }}s</span>
+            </button>
           </div>
         </div>
       </div>
     </div>
+    <div v-if="showSupportVerify" class="row justify-content-center mt-4 mb-5">
+      <div class="col-10 col-md-8 col-lg-6 text-start">
+        <div class="alert alert-info">
+          Too many failed login attempts ({{ failedLoginCount }}).
+          To contact the admin, please verify ownership with your email and a QR token.
+        </div>
+        <SupportUnlockAndRequest :username="username.trim()" />
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -54,10 +71,12 @@ import UsernameInput from "@/components/inputs/UsernameInput.vue";
 import PasswordInput from "@/components/inputs/PasswordInput.vue";
 import UsernameService from "@/services/UsernameService";
 import PasswordService from "@/services/PasswordService";
+import SupportUnlockAndRequest from "@/components/SupportUnlockAndRequest.vue";
+
 
 export default {
   name: 'LoginView',
-  components: {PasswordInput, UsernameInput, LoginCreateAccountMenu, AlertDanger},
+  components: {PasswordInput, UsernameInput, LoginCreateAccountMenu, AlertDanger, SupportUnlockAndRequest},
   data() {
     return {
       username: '',
@@ -75,11 +94,19 @@ export default {
         message: '',
         errorCode: 0
       },
+
+      failedLoginCount: 0,
+      showSupportVerify: false,
+      cooldownSeconds: 30,
+      cooldownRemaining: 0,
+      cooldownTimer: null,
     }
   },
   methods: {
     setUsername(username) {
       this.username = username
+      this.loadFailCount()
+      this.loadCooldown()
     },
     setPassword(password) {
       this.password = password
@@ -103,10 +130,11 @@ export default {
           .catch(error => this.handleLoginError(error))
     },
     handleLoginResponse(response, trimmedUsername) {
+      this.resetFailCount()
       this.loginResponse = response.data
-      this.setSessionStorageItems(trimmedUsername);
-      this.updateNavMenuUserIsLoggedIn();
-      NavigationService.navigateToItemsView();
+      this.setSessionStorageItems(trimmedUsername)
+      this.updateNavMenuUserIsLoggedIn()
+      NavigationService.navigateToItemsView()
     },
     setSessionStorageItems(trimmedUsername) {
       sessionStorage.setItem('userId', this.loginResponse.userId)
@@ -121,6 +149,7 @@ export default {
       this.errorResponse = error?.response?.data || { message: 'Unknown error', errorCode: 0 }
       if ( status === 403 && this.errorResponse.errorCode === 111) {
         this.password = ''
+        this.incrementFailCount()
         this.showAlert(this.errorResponse.message)
         return
       }
@@ -137,6 +166,85 @@ export default {
     resetAlertMessage() {
       this.alertMessage = ''
     },
-  }
+    getFailKey() {
+      const u = (this.username || '').trim().toLowerCase()
+      return u ? `loginFailCount:${u}` : 'loginFailCount'
+    },
+    loadFailCount() {
+      const raw = localStorage.getItem(this.getFailKey())
+      this.failedLoginCount = Number(raw || 0)
+      this.showSupportVerify = this.failedLoginCount >= 3
+    },
+    incrementFailCount() {
+      const next = this.failedLoginCount + 1
+      this.failedLoginCount = next
+      localStorage.setItem(this.getFailKey(), String(next))
+      this.showSupportVerify = next >= 3
+      if (next === 3) {
+        this.startCooldown()
+      }
+    },
+    resetFailCount() {
+      this.failedLoginCount = 0
+      localStorage.removeItem(this.getFailKey())
+      this.showSupportVerify = false
+      this.cooldownRemaining = 0
+      if (this.cooldownTimer) {
+        clearInterval(this.cooldownTimer)
+        this.cooldownTimer = null
+      }
+      localStorage.removeItem(this.getCooldownKey())
+    },
+
+    getCooldownKey() {
+      const u = (this.username || '').trim().toLowerCase()
+      return u ? `loginCooldownUntil:${u}` : 'loginCooldownUntil'
+    },
+
+    startCooldown() {
+      const until = Date.now() + this.cooldownSeconds * 1000
+      localStorage.setItem(this.getCooldownKey(), String(until))
+      this.startCooldownTimer(until)
+    },
+
+    loadCooldown() {
+      const untilRaw = localStorage.getItem(this.getCooldownKey())
+      if (!untilRaw) return
+
+      const until = Number(untilRaw)
+      if (Date.now() >= until) {
+        localStorage.removeItem(this.getCooldownKey())
+        return
+      }
+
+      this.startCooldownTimer(until)
+    },
+
+    startCooldownTimer(until) {
+      if (this.cooldownTimer) clearInterval(this.cooldownTimer)
+
+      this.cooldownRemaining = Math.ceil((until - Date.now()) / 1000)
+
+      this.cooldownTimer = setInterval(() => {
+        const remaining = Math.ceil((until - Date.now()) / 1000)
+
+        if (remaining <= 0) {
+          clearInterval(this.cooldownTimer)
+          this.cooldownTimer = null
+          this.cooldownRemaining = 0
+          localStorage.removeItem(this.getCooldownKey())
+          return
+        }
+
+        this.cooldownRemaining = remaining
+      }, 1000)
+    },
+
+  },
+  mounted() {
+    this.loadFailCount()
+    this.loadCooldown()
+  },
+
 }
 </script>

@@ -307,6 +307,16 @@ input.form-control {
     transform: scale(1.2);
     box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
 }
+/* Honeypot field: hidden from users, visible to bots */
+.hp-field {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+}
+
+
 
 
 
