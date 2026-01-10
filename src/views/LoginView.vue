@@ -23,11 +23,19 @@
               :username-error="usernameError"
               @event-username-updated="setUsername"/>
 
-            <PasswordInput
-                :password="password"
-                :password-error="passwordError"
-                @event-password-updated="setPassword"
-            />
+          <PasswordInput
+              :password="password"
+              :password-error="passwordError"
+              @event-password-updated="setPassword"
+          />
+          <!-- 🔒 Honeypot field -->
+          <input
+              v-model="loginWebsite"
+              type="text"
+              class="hp-field"
+              autocomplete="off"
+              tabindex="-1"
+          />
           <div class="form-floating">
             <button @click="processLogin"
                     type="button"
@@ -47,7 +55,7 @@
           Too many failed login attempts ({{ failedLoginCount }}).
           To contact the admin, please verify ownership with your email and a QR token.
         </div>
-        <SupportUnlockAndRequest :username="username.trim()" />
+        <SupportUnlockAndRequest :username="username.trim()"/>
       </div>
     </div>
 
@@ -59,6 +67,16 @@ h1 {
   margin-top: 30px; /* to push the h1 lower */
   margin-bottom: 40px; /*to push the next block lower*/
 }
+
+.hp-field {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+
 </style>
 
 <script>
@@ -81,6 +99,7 @@ export default {
     return {
       username: '',
       password: '',
+      loginWebsite: '', // honeypot
       alertMessage: '',
       usernameError: '',
       passwordError: '',
@@ -125,11 +144,12 @@ export default {
     },
     executeLogin() {
       const trimmedUsername = this.username.trim()
-      LoginService.login(trimmedUsername, this.password)
+      LoginService.login(trimmedUsername, this.password,  this.loginWebsite)
           .then(response => this.handleLoginResponse(response, trimmedUsername))
           .catch(error => this.handleLoginError(error))
     },
     handleLoginResponse(response, trimmedUsername) {
+      this.loginWebsite = ''
       this.resetFailCount()
       this.loginResponse = response.data
       this.setSessionStorageItems(trimmedUsername)
@@ -145,9 +165,10 @@ export default {
       this.$emit('event-user-logged-in')
     },
     handleLoginError(error) {
+      this.loginWebsite = ''
       const status = error?.response?.status
-      this.errorResponse = error?.response?.data || { message: 'Unknown error', errorCode: 0 }
-      if ( status === 403 && this.errorResponse.errorCode === 111) {
+      this.errorResponse = error?.response?.data || {message: 'Unknown error', errorCode: 0}
+      if (status === 403 && this.errorResponse.errorCode === 111) {
         this.password = ''
         this.incrementFailCount()
         this.showAlert(this.errorResponse.message)
