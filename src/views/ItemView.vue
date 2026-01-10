@@ -97,6 +97,7 @@ export default {
           .then(response => {
             this.item = response.data
             sessionStorage.setItem('item', JSON.stringify(this.item))
+            this.getQrCode()
           })
           .catch(error => {
             this.errorResponse = error.response?.data || {message: 'Failed to load item data.'};
@@ -108,9 +109,17 @@ export default {
 
     getQrCode() {
       QrCodeService.sendGetQrCodeRequest(this.itemId)
-          .then(response => this.qrCode = response.data)
-          .catch(() => NavigationService.navigateToErrorView())
+          .then(response => {
+            this.qrCode = response.data
+          })
+          .catch(() => {
+            this.qrCode = ''
+            if (!this.errorMessage) {
+              this.errorMessage = 'QR code could not be generated for this item.'
+            }
+          })
     },
+
 
     // --------- ADD ITEM ---------
     processAddItem() {
@@ -149,8 +158,24 @@ export default {
     executeAddItem() {
       ItemService.sendPostItemRequest(this.userId, this.item)
           .then(() => this.handleAddItemResponse())
-          .catch(error => this.itemNameAlreadyExists(error))
+          .catch(error => {
+            if (this.itemNameAlreadyExists(error)) {
+              this.errorMessage = 'Item with this name already exists'
+              return
+            }
+
+            const status = error?.response?.status
+            const msg = error?.response?.data?.message
+
+            if (status === 400) {
+              this.errorMessage = msg || 'Please check your input'
+              return
+            }
+
+            this.errorMessage = 'Could not add item. Please try again.'
+          })
     },
+
 
     handleAddItemResponse() {
       this.successMessage = 'New item "' + this.item.itemName + '" has been added!'
@@ -159,7 +184,8 @@ export default {
     },
 
     itemNameAlreadyExists(error) {
-      return error.response.status === 403 && this.errorResponse.errorCode === 333;
+      const data = error?.response?.data
+      return error?.response?.status === 403 && data?.errorCode === 333
     },
 
     // --------- UPDATE ITEM ---------
@@ -174,8 +200,24 @@ export default {
     executeUpdateItem() {
       ItemService.sendPutItemRequest(this.itemId, this.item)
           .then(() => this.handleUpdateItemResponse())
-          .catch(() => NavigationService.navigateToErrorView())
+          .catch(error => {
+            if (this.itemNameAlreadyExists(error)) {
+              this.errorMessage = 'Item with this name already exists'
+              return
+            }
+
+            const status = error?.response?.status
+            const msg = error?.response?.data?.message
+
+            if (status === 400) {
+              this.errorMessage = msg || 'Please check your input'
+              return
+            }
+
+            this.errorMessage = 'Could not update item. Please try again.'
+          })
     },
+
 
     handleUpdateItemResponse() {
       sessionStorage.setItem('successMessage', 'Item "' + this.item.itemName + '" updated succesfully')
@@ -194,8 +236,12 @@ export default {
     deleteItem() {
       ItemService.sendDeleteItem(this.itemId)
           .then(() => NavigationService.navigateToItemsView())
-          .catch(() => NavigationService.navigateToErrorView())
+          .catch(() => {
+            this.deleteItemModalIsOpen = false
+            this.errorMessage = 'Could not delete item. Please try again.'
+          })
     },
+
 
     // --------- IMAGE HANDLING ---------
     setItemImageData(imageData) {
@@ -220,15 +266,16 @@ export default {
     handleDeleteStoredImage() {
       ItemService.sendDeleteItemImageRequest(this.itemId, this.item.imageId)
           .then(() => {
-            this.item.imageData = '';
-            this.item.imageId = null;
-            sessionStorage.setItem('item', JSON.stringify(this.item));
-            alert("Image deleted");
+            this.item.imageData = ''
+            this.item.imageId = null
+            sessionStorage.setItem('item', JSON.stringify(this.item))
+            alert("Image deleted")
           })
           .catch(() => {
-            NavigationService.navigateToErrorView();
-          });
+            this.errorMessage = 'Could not delete image. Please try again.'
+          })
     },
+
 
     // --------- FIELD SETTERS ---------
     setItemItemName(itemName) {
@@ -288,7 +335,6 @@ export default {
       return;
     }
     this.loadItem();
-    this.getQrCode()
     const mode = SessionStorageService.getItemMode();
     SessionStorageService.clearItemMode();
     if (mode === 'edit') {
