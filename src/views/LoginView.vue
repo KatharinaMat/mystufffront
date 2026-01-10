@@ -28,7 +28,7 @@
               :password-error="passwordError"
               @event-password-updated="setPassword"
           />
-          <!-- 🔒 Honeypot field -->
+          <!-- Honeypot field -->
           <input
               v-model="loginWebsite"
               type="text"
@@ -75,8 +75,6 @@ h1 {
   height: 1px;
   opacity: 0;
 }
-
-
 </style>
 
 <script>

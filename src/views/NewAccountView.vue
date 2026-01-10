@@ -20,9 +20,15 @@
         <PasswordInput :password="user.password" :password-error="passwordError"
                        @event-password-updated="setUserPassword"/>
         <EmailInput :email="user.email" :email-error="emailError"
-                    @event-email-updated="setUserEmail"/>
-        <!-- 🔒 Honeypot field -->
-        <input v-model="user.website" type="text" class="hp-field" autocomplete="off" tabindex="-1"/>
+                      @event-email-updated = "setUserEmail"/>
+        <!-- Honeypot field -->
+        <input v-model="user.website" type="text" class="hp-field" autocomplete="off" tabindex="-1" />
+
+        <!-- hCaptcha -->
+        <div class="mb-3">
+          <div ref="hcaptchaEl"></div>
+          <div v-if="captchaError" class="text-danger mt-2">{{ captchaError }}</div>
+        </div>
 
         <div class="form-floating">
           <button @click="addNewUser" type="button" class="btn btn-custom btn-large">Sign up!</button>
@@ -43,6 +49,7 @@ h1 {
   height: 1px;
   opacity: 0;
 }
+
 </style>
 
 <script>
@@ -96,13 +103,12 @@ export default {
         email: this.user.email.trim(),
         website: this.user.website // honeypot
       }
-      UserService.sendPostUserRequest(payload)
-          .then(() => this.handleAddNewUserResponse(payload.username))
-          .catch(error => this.handleAddNewUserError(error))
+        UserService.sendPostUserRequest(payload)
+            .then(() => this.handleAddNewUserResponse(payload.username))
+            .catch(error => this.handleAddNewUserError(error))
     },
 
     handleAddNewUserResponse(trimmedUsername) {
-      this.user.website = ''   //reset honeypot
       this.hideAddUserForm()
       this.alertSuccessMessage = 'New user "' + trimmedUsername + '" added! You can now login'
       setTimeout(NavigationService.navigateToLoginView, 8000)
@@ -116,16 +122,15 @@ export default {
       this.usernameError = UsernameService.validateSignupUsername(this.user.username)
       this.passwordError = PasswordService.validateSignupPassword(this.user.password)
       this.emailError = EmailService.validateSignupEmail(this.user.email)
-    },
+      },
 
     formInputIsCorrect() {
       return this.usernameError === '' && this.passwordError === '' && this.emailError === ''
     },
 
     handleAddNewUserError(error) {
-      this.user.website = ''   //reset honeypot
       const status = error?.response?.status
-      this.errorResponse = error?.response?.data || {message: 'Unknown error', errorCode: 0}
+      this.errorResponse = error?.response?.data || { message: 'Unknown error', errorCode: 0 }
 
       if (status === 403 && this.errorResponse.errorCode === 222) {
         this.usernameError = this.errorResponse.message
