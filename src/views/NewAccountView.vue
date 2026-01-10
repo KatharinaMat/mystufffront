@@ -101,6 +101,11 @@ export default {
       this.validateFromInput()
       if (!this.formInputIsCorrect()) return
 
+      this.captchaError = ''
+      if (!this.captchaToken) {
+        this.captchaError = 'Please complete the captcha.'
+        return
+      }
       const payload = {
         username: this.user.username.trim(),
         password: this.user.password,
@@ -108,17 +113,17 @@ export default {
         website: this.user.website, // honeypot
         captchaToken: this.captchaToken
       }
-      this.captchaError = ''
-      if (!this.captchaToken) {
-        this.captchaError = 'Please complete the captcha.'
-        return
-      }
+
       UserService.sendPostUserRequest(payload)
             .then(() => this.handleAddNewUserResponse(payload.username))
             .catch(error => this.handleAddNewUserError(error))
     },
 
     handleAddNewUserResponse(trimmedUsername) {
+      this.user.website = ''
+      this.captchaToken = ''
+      this.renderHcaptcha()
+
       this.hideAddUserForm()
       this.alertSuccessMessage = 'New user "' + trimmedUsername + '" added! You can now login'
       setTimeout(NavigationService.navigateToLoginView, 8000)
@@ -139,6 +144,10 @@ export default {
     },
 
     handleAddNewUserError(error) {
+      this.user.website = ''
+      this.captchaToken = ''
+      this.renderHcaptcha()
+
       const status = error?.response?.status
       this.errorResponse = error?.response?.data || { message: 'Unknown error', errorCode: 0 }
 
