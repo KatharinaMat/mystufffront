@@ -1,48 +1,96 @@
-import axios from "axios";
+// import axios from "axios";
+//
+// export default {
+//
+//     sendPostItemRequest(userId, item) {
+//         return axios.post('/item', item, {
+//             params: {
+//                 userId: userId
+//             }
+//         })
+//     },
+//
+//     sendGetItemsRequest(userId) {
+//         return axios.get('/items', {
+//             params: {
+//                 userId: userId
+//             }
+//         })
+//     },
+//
+//     sendGetItemRequest(itemId) {
+//         return axios.get('/item', {
+//             params: {
+//                 itemId: itemId
+//             }
+//         })
+//     },
+//     sendPutItemRequest(itemId, item) {
+//         return axios.put('/item', item, {
+//             params: {
+//                 itemId: itemId
+//             }
+//         })
+//     },
+//
+//     sendDeleteItem(itemId) {
+//         return axios.delete('/item', {
+//             params: {
+//                 itemId: itemId
+//             }
+//         })
+//     },
+//
+//     sendDeleteItemImageRequest(itemId, imageId) {
+//         return axios.delete(`/${itemId}/images/${imageId}`);
+//     },
+//
+// }
+
+import apiClient from "./apiClient";
 
 export default {
-
     sendPostItemRequest(userId, item) {
-        return axios.post('/item', item, {
+        return apiClient.post("/item", item, {
             params: {
-                userId: userId
-            }
-        })
+                userId,
+            },
+        });
     },
 
     sendGetItemsRequest(userId) {
-        return axios.get('/items', {
+        return apiClient.get("/items", {
             params: {
-                userId: userId
-            }
-        })
+                userId,
+            },
+        });
     },
 
     sendGetItemRequest(itemId) {
-        return axios.get('/item', {
+        return apiClient.get("/item", {
             params: {
-                itemId: itemId
-            }
-        })
+                itemId,
+            },
+        });
     },
+
     sendPutItemRequest(itemId, item) {
-        return axios.put('/item', item, {
+        return apiClient.put("/item", item, {
             params: {
-                itemId: itemId
-            }
-        })
+                itemId,
+            },
+        });
     },
 
     sendDeleteItem(itemId) {
-        return axios.delete('/item', {
+        return apiClient.delete("/item", {
             params: {
-                itemId: itemId
-            }
-        })
+                itemId,
+            },
+        });
     },
 
     sendDeleteItemImageRequest(itemId, imageId) {
-        return axios.delete(`/${itemId}/images/${imageId}`);
+        return apiClient.delete(`/${itemId}/images/${imageId}`);
     },
-
-}
+};
