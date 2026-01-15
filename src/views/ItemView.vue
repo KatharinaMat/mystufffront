@@ -64,7 +64,7 @@ export default {
     return {
       itemId: Number(useRoute().query.itemId),
       userId: SessionStorageService.getUserId(),
-
+      originalItem: null,
       errorMessage: '',
       successMessage: '',
 
@@ -81,7 +81,8 @@ export default {
         model: '',
         comment: '',
         imageData: '',
-        imageId: null
+        imageId: null,
+        qrToken: ''
       },
 
       loading: false,
@@ -92,19 +93,30 @@ export default {
   methods: {
     // --------- LOAD / INIT ---------
     loadItem() {
+      this.errorResponse = null
+      this.errorMessage = ''
       this.startLoadingSpinner()
+
       ItemService.sendGetItemRequest(this.itemId)
           .then(response => {
+            console.log("✅ /item response.data:", response.data)
             this.item = response.data
-            sessionStorage.setItem('item', JSON.stringify(this.item))
+            this.originalItem = JSON.parse(JSON.stringify(this.item))
+            const itemForStorage = {
+              ...this.item,
+              imageData: ''
+            }
+            sessionStorage.setItem('item', JSON.stringify(itemForStorage))
             this.getQrCode()
           })
           .catch(error => {
-            this.errorResponse = error.response?.data || {message: 'Failed to load item data.'};
+            console.error("❌ Axios catch error:", error)
+            this.errorResponse =
+                error?.response?.data || { message: 'Failed to load item data.' }
           })
           .finally(() => {
             this.stopLoadingSpinner()
-          });
+          })
     },
 
     getQrCode() {
@@ -114,9 +126,7 @@ export default {
           })
           .catch(() => {
             this.qrCode = ''
-            if (!this.errorMessage) {
-              this.errorMessage = 'QR code could not be generated for this item.'
-            }
+            if (!this.errorMessage) this.errorMessage = 'QR code could not be generated for this item.'
           })
     },
 
@@ -218,9 +228,9 @@ export default {
           })
     },
 
-
     handleUpdateItemResponse() {
       sessionStorage.setItem('successMessage', 'Item "' + this.item.itemName + '" updated succesfully')
+      this.originalItem = JSON.parse(JSON.stringify(this.item))
       NavigationService.navigateToItemsView()
     },
 
@@ -241,7 +251,6 @@ export default {
             this.errorMessage = 'Could not delete item. Please try again.'
           })
     },
-
 
     // --------- IMAGE HANDLING ---------
     setItemImageData(imageData) {
@@ -268,14 +277,14 @@ export default {
           .then(() => {
             this.item.imageData = ''
             this.item.imageId = null
-            sessionStorage.setItem('item', JSON.stringify(this.item))
+            const itemForStorage = { ...this.item, imageData: '' }
+            sessionStorage.setItem('item', JSON.stringify(itemForStorage))
             alert("Image deleted")
           })
           .catch(() => {
             this.errorMessage = 'Could not delete image. Please try again.'
           })
     },
-
 
     // --------- FIELD SETTERS ---------
     setItemItemName(itemName) {
@@ -320,7 +329,9 @@ export default {
     disableEdit() {
       this.isEdit = false
       this.isView = true
-      this.item = JSON.parse(sessionStorage.getItem("item"))
+      if (this.originalItem) {
+        this.item = JSON.parse(JSON.stringify(this.originalItem))
+      }
     },
 
     goBack() {
